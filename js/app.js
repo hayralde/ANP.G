@@ -7,8 +7,8 @@ let chartStatus = null;
 let chartResponsavel = null;
 let chartCategoria = null;
 
-document.addEventListener("DOMContentLoaded", () => {
-  activities = loadActivities();
+document.addEventListener("DOMContentLoaded", async () => {
+  activities = await loadActivities();
   renderKPIs();
   renderCharts();
   renderCards();
@@ -266,8 +266,8 @@ function escapeHtml(str) {
     .replace(/"/g, quot);
 }
 
-window.refreshDashboard = function () {
-  activities = loadActivities();
+window.refreshDashboard = async function () {
+  activities = await loadActivities();
   renderKPIs();
   renderCharts();
   renderCards();
