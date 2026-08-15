@@ -99,7 +99,6 @@ function renderAdminTable() {
     </tr>
   `).join("");
 
-  // Listeners para mudanças em tempo real (só visual, salva no botão)
   tbody.querySelectorAll("select, input").forEach(el => {
     el.addEventListener("change", markDirty);
   });
@@ -107,7 +106,6 @@ function renderAdminTable() {
 
 function formatDateForInput(val) {
   if (!val || val.includes("XX")) return "";
-  // Aceita DD/MM/YYYY ou YYYY-MM-DD
   if (/^\d{4}-\d{2}-\d{2}$/.test(val)) return val;
   const parts = val.split("/");
   if (parts.length === 3) {
@@ -181,9 +179,13 @@ function showToast(msg, type = "success") {
 
 function escapeHtml(str) {
   if (!str) return "";
+  const amp = ["&", "a", "m", "p", ";"].join("");
+  const lt = ["&", "l", "t", ";"].join("");
+  const gt = ["&", "g", "t", ";"].join("");
+  const quot = ["&", "q", "u", "o", "t", ";"].join("");
   return String(str)
-    .replace(/&/g, "&")
-    .replace(/</g, "<")
-    .replace(/>/g, ">")
-    .replace(/"/g, """);
+    .replace(/&/g, amp)
+    .replace(/</g, lt)
+    .replace(/>/g, gt)
+    .replace(/"/g, quot);
 }
