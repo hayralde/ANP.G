@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Administração | ANP Monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">
+      <div class="logo">ANP</div>
+      <span>Monitor de Atividades</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Dashboard</a>
+      <a href="admin.html" class="nav-link active">Administração</a>
+    </div>
+  </nav>
+
+  <!-- Login -->
+  <section id="login-section" class="login-container">
+    <div class="login-box">
+      <h2>Área Administrativa</h2>
+      <p class="subtitle">Acesse para atualizar status e dados das atividades</p>
+      <div id="login-error" class="login-error"></div>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="username">Usuário</label>
+          <input type="text" id="username" class="form-input" autocomplete="username" required placeholder="admin" />
+        </div>
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <input type="password" id="password" class="form-input" autocomplete="current-password" required placeholder="••••••••" />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:0.75rem">
+          Entrar
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Admin Panel -->
+  <section id="admin-section" class="container" style="display:none">
+    <header class="page-header">
+      <h1>Gerenciar Atividades</h1>
+      <p>Altere status, responsáveis, datas e observações. Clique em <strong>Salvar</strong> para persistir.</p>
+    </header>
+
+    <div class="admin-actions">
+      <button type="button" id="btn-save" class="btn btn-primary">Salvar alterações</button>
+      <button type="button" id="btn-reset" class="btn btn-danger">Restaurar dados originais</button>
+      <button type="button" id="btn-logout" class="btn btn-secondary">Sair</button>
+      <a href="index.html" class="btn btn-secondary">Ver Dashboard</a>
+    </div>
+
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Tarefa / Subtarefa</th>
+            <th>Status</th>
+            <th>Responsável</th>
+            <th>Pendência</th>
+            <th>Tipo</th>
+            <th>Previsão</th>
+            <th>Observação</th>
+          </tr>
+        </thead>
+        <tbody id="admin-tbody">
+          <!-- Gerado via JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:1.25rem;font-size:0.8rem;color:var(--text-muted)">
+      Nota: As alterações são salvas no navegador (localStorage). Em um ambiente multi-usuário real seria necessário um backend.
+      Para este projeto estático no GitHub Pages, cada usuário vê as mudanças feitas no próprio navegador.
+    </p>
+  </section>
+
+  <script src="js/data.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

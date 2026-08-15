@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ANP Monitor | Plano de Ação</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">
+      <div class="logo">ANP</div>
+      <span>Monitor de Atividades</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link active">Dashboard</a>
+      <a href="admin.html" class="nav-link">Administração</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- Header -->
+    <header class="page-header">
+      <h1>Dashboard — Plano de Ação ANP</h1>
+      <p>Acompanhe o progresso das atividades do projeto em tempo real</p>
+    </header>
+
+    <!-- KPIs -->
+    <section class="kpi-grid" aria-label="Indicadores principais">
+      <div class="kpi-card total">
+        <div class="kpi-label">Total de Atividades</div>
+        <div class="kpi-value" id="kpi-total">0</div>
+        <div class="kpi-sub" id="kpi-pct">0% concluído</div>
+      </div>
+      <div class="kpi-card concluido">
+        <div class="kpi-label">Concluídas</div>
+        <div class="kpi-value" id="kpi-concluido">0</div>
+        <div class="kpi-sub">Status finalizado</div>
+      </div>
+      <div class="kpi-card andamento">
+        <div class="kpi-label">Em Andamento</div>
+        <div class="kpi-value" id="kpi-andamento">0</div>
+        <div class="kpi-sub">Em execução</div>
+      </div>
+      <div class="kpi-card parado">
+        <div class="kpi-label">Paradas</div>
+        <div class="kpi-value" id="kpi-parado">0</div>
+        <div class="kpi-sub">Bloqueadas</div>
+      </div>
+      <div class="kpi-card definir">
+        <div class="kpi-label">A Definir</div>
+        <div class="kpi-value" id="kpi-definir">0</div>
+        <div class="kpi-sub">Pendentes de status</div>
+      </div>
+    </section>
+
+    <!-- Charts -->
+    <section class="charts-grid" aria-label="Gráficos">
+      <div class="chart-card">
+        <h3>Distribuição por Status</h3>
+        <div class="chart-container">
+          <canvas id="chart-status"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>Atividades por Responsável</h3>
+        <div class="chart-container">
+          <canvas id="chart-responsavel"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>Atividades por Categoria</h3>
+        <div class="chart-container">
+          <canvas id="chart-categoria"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters + Cards -->
+    <section>
+      <div class="page-header" style="margin-bottom:1rem">
+        <h1 style="font-size:1.35rem">Atividades do Projeto</h1>
+        <p>Visualização em cards de todas as tarefas</p>
+      </div>
+
+      <div class="filters-bar">
+        <div class="filter-group">
+          <label for="filter-status">Status</label>
+          <select id="filter-status" class="filter-select">
+            <option value="">Todos</option>
+            <option value="A DEFINIR">A Definir</option>
+            <option value="PARADO">Parado</option>
+            <option value="EM ANDAMENTO">Em Andamento</option>
+            <option value="CONCLUIDO">Concluído</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="filter-responsavel">Responsável</label>
+          <select id="filter-responsavel" class="filter-select">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="filter-categoria">Categoria</label>
+          <select id="filter-categoria" class="filter-select">
+            <option value="">Todas</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="filter-search">Buscar</label>
+          <input type="search" id="filter-search" class="filter-input" placeholder="Tarefa, subtarefa..." />
+        </div>
+        <div class="filter-group" style="justify-content:flex-end">
+          <label>&nbsp;</label>
+          <button type="button" id="btn-clear-filters" class="btn btn-secondary">Limpar filtros</button>
+        </div>
+      </div>
+
+      <div class="cards-grid" id="cards-container">
+        <!-- Cards gerados via JS -->
+      </div>
+    </section>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
