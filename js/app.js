@@ -42,7 +42,6 @@ function getStatusClass(status) {
 }
 
 function renderCharts() {
-  // Status
   const statusCounts = {
     "A DEFINIR": 0,
     "PARADO": 0,
@@ -78,7 +77,6 @@ function renderCharts() {
     }
   });
 
-  // Responsáveis
   const respCounts = {};
   activities.forEach(a => {
     respCounts[a.responsavel] = (respCounts[a.responsavel] || 0) + 1;
@@ -116,7 +114,6 @@ function renderCharts() {
     }
   });
 
-  // Categorias
   const catCounts = {};
   activities.forEach(a => {
     catCounts[a.categoria] = (catCounts[a.categoria] || 0) + 1;
@@ -214,7 +211,6 @@ function setupFilters() {
   const catSel = document.getElementById("filter-categoria");
   const searchInput = document.getElementById("filter-search");
 
-  // Popular selects
   const responsaveis = [...new Set(activities.map(a => a.responsavel))].sort();
   const categorias = [...new Set(activities.map(a => a.categoria))].sort();
 
@@ -259,14 +255,17 @@ function setupFilters() {
 
 function escapeHtml(str) {
   if (!str) return "";
+  const amp = ["&", "a", "m", "p", ";"].join("");
+  const lt = ["&", "l", "t", ";"].join("");
+  const gt = ["&", "g", "t", ";"].join("");
+  const quot = ["&", "q", "u", "o", "t", ";"].join("");
   return String(str)
-    .replace(/&/g, "&")
-    .replace(/</g, "<")
-    .replace(/>/g, ">")
-    .replace(/"/g, """);
+    .replace(/&/g, amp)
+    .replace(/</g, lt)
+    .replace(/>/g, gt)
+    .replace(/"/g, quot);
 }
 
-// Expor para recarregar após mudanças no admin (mesmo browser)
 window.refreshDashboard = function () {
   activities = loadActivities();
   renderKPIs();
