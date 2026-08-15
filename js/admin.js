@@ -5,24 +5,30 @@
 const ADMIN_USER = "admin";
 const ADMIN_PASS = "admin123";
 const SESSION_KEY = "anp_admin_session";
+const TOKEN_KEY = "anp_gh_token";
 
 let activities = [];
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
   if (isLoggedIn()) {
     showAdminPanel();
   } else {
     showLogin();
   }
 
-  document.getElementById("login-form")?.addEventListener("submit", handleLogin);
-  document.getElementById("btn-logout")?.addEventListener("click", handleLogout);
-  document.getElementById("btn-save")?.addEventListener("click", saveAll);
-  document.getElementById("btn-reset")?.addEventListener("click", handleReset);
+  document.getElementById("login-form").addEventListener("submit", handleLogin);
+  document.getElementById("btn-logout").addEventListener("click", handleLogout);
+  document.getElementById("btn-save").addEventListener("click", saveAll);
+  document.getElementById("btn-reset").addEventListener("click", handleReset);
+  document.getElementById("btn-save-token").addEventListener("click", saveToken);
 });
 
 function isLoggedIn() {
   return sessionStorage.getItem(SESSION_KEY) === "true";
+}
+
+function getToken() {
+  return sessionStorage.getItem(TOKEN_KEY) || "";
 }
 
 function showLogin() {
@@ -33,15 +39,21 @@ function showLogin() {
 function showAdminPanel() {
   document.getElementById("login-section").style.display = "none";
   document.getElementById("admin-section").style.display = "block";
-  activities = loadActivities();
-  renderAdminTable();
+
+  var tokenInput = document.getElementById("gh-token");
+  if (tokenInput) tokenInput.value = getToken();
+
+  loadActivities().then(function (data) {
+    activities = data;
+    renderAdminTable();
+  });
 }
 
 function handleLogin(e) {
   e.preventDefault();
-  const user = document.getElementById("username").value.trim();
-  const pass = document.getElementById("password").value;
-  const errorEl = document.getElementById("login-error");
+  var user = document.getElementById("username").value.trim();
+  var pass = document.getElementById("password").value;
+  var errorEl = document.getElementById("login-error");
 
   if (user === ADMIN_USER && pass === ADMIN_PASS) {
     sessionStorage.setItem(SESSION_KEY, "true");
@@ -61,111 +73,131 @@ function handleLogout() {
   document.getElementById("password").value = "";
 }
 
-function renderAdminTable() {
-  const tbody = document.getElementById("admin-tbody");
-  tbody.innerHTML = activities.map((a, idx) => `
-    <tr data-id="${a.id}">
-      <td><strong>#${a.id}</strong></td>
-      <td>
-        <div style="font-weight:600;font-size:0.85rem">${escapeHtml(a.tarefa)}</div>
-        <div style="font-size:0.75rem;color:var(--text-secondary)">${escapeHtml(a.subtarefa)}</div>
-      </td>
-      <td>
-        <select class="edit-status" data-idx="${idx}">
-          ${STATUS_OPTIONS.map(s => `<option value="${s}" ${a.status === s ? "selected" : ""}>${s}</option>`).join("")}
-        </select>
-      </td>
-      <td>
-        <select class="edit-responsavel" data-idx="${idx}">
-          ${RESPONSAVEIS.map(r => `<option value="${r}" ${a.responsavel === r ? "selected" : ""}>${r}</option>`).join("")}
-        </select>
-      </td>
-      <td>
-        <select class="edit-pendencia" data-idx="${idx}">
-          ${PENDENCIAS.map(p => `<option value="${p}" ${a.pendencia === p ? "selected" : ""}>${p}</option>`).join("")}
-        </select>
-      </td>
-      <td>
-        <select class="edit-tipo" data-idx="${idx}">
-          ${TIPOS_DEMANDA.map(t => `<option value="${t}" ${a.tipoDemanda === t ? "selected" : ""}>${t}</option>`).join("")}
-        </select>
-      </td>
-      <td>
-        <input type="date" class="edit-previsao" data-idx="${idx}" value="${formatDateForInput(a.previsao)}" />
-      </td>
-      <td>
-        <input type="text" class="edit-obs" data-idx="${idx}" value="${escapeHtml(a.obs || "")}" placeholder="Observação..." style="min-width:140px" />
-      </td>
-    </tr>
-  `).join("");
+function saveToken() {
+  var token = document.getElementById("gh-token").value.trim();
+  if (!token) {
+    showToast("Cole o Personal Access Token do GitHub.", "error");
+    return;
+  }
+  sessionStorage.setItem(TOKEN_KEY, token);
+  showToast("Token salvo nesta sessão (não fica no código).", "success");
+}
 
-  tbody.querySelectorAll("select, input").forEach(el => {
+function renderAdminTable() {
+  var tbody = document.getElementById("admin-tbody");
+  tbody.innerHTML = activities.map(function (a, idx) {
+    return (
+      '<tr data-id="' + a.id + '">' +
+        "<td><strong>#" + a.id + "</strong></td>" +
+        "<td>" +
+          '<div style="font-weight:600;font-size:0.85rem">' + escapeHtml(a.tarefa) + "</div>" +
+          '<div style="font-size:0.75rem;color:var(--text-secondary)">' + escapeHtml(a.subtarefa) + "</div>" +
+        "</td>" +
+        "<td><select class=\"edit-status\">" + optionsHtml(STATUS_OPTIONS, a.status) + "</select></td>" +
+        "<td><select class=\"edit-responsavel\">" + optionsHtml(RESPONSAVEIS, a.responsavel) + "</select></td>" +
+        "<td><select class=\"edit-pendencia\">" + optionsHtml(PENDENCIAS, a.pendencia) + "</select></td>" +
+        "<td><select class=\"edit-tipo\">" + optionsHtml(TIPOS_DEMANDA, a.tipoDemanda) + "</select></td>" +
+        '<td><input type="date" class="edit-previsao" value="' + formatDateForInput(a.previsao) + '" /></td>' +
+        '<td><input type="text" class="edit-obs" value="' + escapeHtml(a.obs || "") + '" placeholder="Observação..." style="min-width:140px" /></td>' +
+      "</tr>"
+    );
+  }).join("");
+
+  tbody.querySelectorAll("select, input").forEach(function (el) {
     el.addEventListener("change", markDirty);
   });
 }
 
+function optionsHtml(list, selected) {
+  return list.map(function (v) {
+    return '<option value="' + escapeHtml(v) + '"' + (v === selected ? " selected" : "") + ">" + escapeHtml(v) + "</option>";
+  }).join("");
+}
+
 function formatDateForInput(val) {
-  if (!val || val.includes("XX")) return "";
+  if (!val || String(val).indexOf("XX") !== -1) return "";
   if (/^\d{4}-\d{2}-\d{2}$/.test(val)) return val;
-  const parts = val.split("/");
+  var parts = String(val).split("/");
   if (parts.length === 3) {
-    return `${parts[2]}-${parts[1].padStart(2,"0")}-${parts[0].padStart(2,"0")}`;
+    return parts[2] + "-" + parts[1].padStart(2, "0") + "-" + parts[0].padStart(2, "0");
   }
   return "";
 }
 
 function formatDateForDisplay(iso) {
   if (!iso) return "";
-  const [y, m, d] = iso.split("-");
-  return `${d}/${m}/${y}`;
+  var p = iso.split("-");
+  return p[2] + "/" + p[1] + "/" + p[0];
 }
 
 function markDirty() {
-  const btn = document.getElementById("btn-save");
-  if (btn) {
-    btn.textContent = "Salvar alterações *";
-    btn.classList.add("btn-primary");
-  }
+  var btn = document.getElementById("btn-save");
+  if (btn) btn.textContent = "Salvar no GitHub *";
 }
 
 function collectFromTable() {
-  const rows = document.querySelectorAll("#admin-tbody tr");
-  rows.forEach(row => {
-    const id = parseInt(row.dataset.id, 10);
-    const activity = activities.find(a => a.id === id);
+  document.querySelectorAll("#admin-tbody tr").forEach(function (row) {
+    var id = parseInt(row.dataset.id, 10);
+    var activity = activities.find(function (a) { return a.id === id; });
     if (!activity) return;
-
     activity.status = row.querySelector(".edit-status").value;
     activity.responsavel = row.querySelector(".edit-responsavel").value;
     activity.pendencia = row.querySelector(".edit-pendencia").value;
     activity.tipoDemanda = row.querySelector(".edit-tipo").value;
-    const dateVal = row.querySelector(".edit-previsao").value;
+    var dateVal = row.querySelector(".edit-previsao").value;
     activity.previsao = dateVal ? formatDateForDisplay(dateVal) : "";
     activity.obs = row.querySelector(".edit-obs").value.trim();
   });
 }
 
-function saveAll() {
-  collectFromTable();
-  saveActivities(activities);
-  const btn = document.getElementById("btn-save");
-  if (btn) {
-    btn.textContent = "Salvar alterações";
+async function saveAll() {
+  var token = getToken() || document.getElementById("gh-token").value.trim();
+  if (!token) {
+    showToast("Informe o Token do GitHub antes de salvar.", "error");
+    document.getElementById("gh-token").focus();
+    return;
   }
-  showToast("Alterações salvas com sucesso! O dashboard refletirá as mudanças.", "success");
+  sessionStorage.setItem(TOKEN_KEY, token);
+
+  collectFromTable();
+  var btn = document.getElementById("btn-save");
+  var original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "Salvando...";
+
+  try {
+    await saveActivitiesToGitHub(activities, token);
+    btn.textContent = "Salvar no GitHub";
+    showToast("Salvo no GitHub! Em 1–2 min o dashboard atualiza para todos.", "success");
+  } catch (e) {
+    console.error(e);
+    showToast("Erro ao salvar: " + e.message, "error");
+    btn.textContent = original;
+  } finally {
+    btn.disabled = false;
+  }
 }
 
-function handleReset() {
-  if (!confirm("Tem certeza que deseja restaurar todos os dados para o estado original da planilha? As alterações locais serão perdidas.")) {
+async function handleReset() {
+  if (!confirm("Restaurar dados originais da planilha e salvar no GitHub?")) return;
+  var token = getToken() || document.getElementById("gh-token").value.trim();
+  if (!token) {
+    showToast("Informe o Token do GitHub.", "error");
     return;
   }
   activities = resetActivities();
   renderAdminTable();
-  showToast("Dados restaurados para o padrão da planilha.", "success");
+  try {
+    await saveActivitiesToGitHub(activities, token);
+    showToast("Dados restaurados e salvos no GitHub.", "success");
+  } catch (e) {
+    showToast("Restaurado na tela, mas falhou ao salvar no GitHub: " + e.message, "error");
+  }
 }
 
-function showToast(msg, type = "success") {
-  let toast = document.getElementById("toast");
+function showToast(msg, type) {
+  type = type || "success";
+  var toast = document.getElementById("toast");
   if (!toast) {
     toast = document.createElement("div");
     toast.id = "toast";
@@ -173,16 +205,16 @@ function showToast(msg, type = "success") {
     document.body.appendChild(toast);
   }
   toast.textContent = msg;
-  toast.className = `toast ${type} show`;
-  setTimeout(() => toast.classList.remove("show"), 3500);
+  toast.className = "toast " + type + " show";
+  setTimeout(function () { toast.classList.remove("show"); }, 4000);
 }
 
 function escapeHtml(str) {
   if (!str) return "";
-  const amp = ["&", "a", "m", "p", ";"].join("");
-  const lt = ["&", "l", "t", ";"].join("");
-  const gt = ["&", "g", "t", ";"].join("");
-  const quot = ["&", "q", "u", "o", "t", ";"].join("");
+  var amp = ["&", "a", "m", "p", ";"].join("");
+  var lt = ["&", "l", "t", ";"].join("");
+  var gt = ["&", "g", "t", ";"].join("");
+  var quot = ["&", "q", "u", "o", "t", ";"].join("");
   return String(str)
     .replace(/&/g, amp)
     .replace(/</g, lt)
