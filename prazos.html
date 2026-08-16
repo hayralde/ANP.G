@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atividades e Prazos | ANP Monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .prazos-panel { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 1.25rem 1.35rem 0.5rem; overflow: hidden; }
+    .prazos-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.5rem; margin-bottom: 1rem; }
+    .prazos-head h2 { font-size: 1.05rem; font-weight: 700; margin: 0; color: #f1f5f9; }
+    .prazos-summary { font-size: 0.78rem; color: #64748b; }
+    .prazos-table-wrap { overflow-x: auto; }
+    .prazos-table { width: 100%; border-collapse: collapse; min-width: 780px; }
+    .prazos-table thead th { text-align: left; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; padding: 0.65rem 0.75rem; border-bottom: 1px solid #334155; white-space: nowrap; }
+    .prazos-table tbody td { padding: 0.95rem 0.75rem; border-bottom: 1px solid #293548; vertical-align: middle; font-size: 0.88rem; color: #e2e8f0; }
+    .prazos-table tbody tr:last-child td { border-bottom: none; }
+    .prazos-table tbody tr:hover td { background: rgba(51, 65, 85, 0.35); }
+    .area-cell { display: flex; align-items: center; gap: 0.55rem; font-weight: 600; font-size: 0.85rem; white-space: nowrap; }
+    .area-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .ativ-main { font-weight: 600; color: #f1f5f9; }
+    .ativ-sub { color: #64748b; font-weight: 400; }
+    .status-pill { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.28rem 0.65rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap; }
+    .status-pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .st-parado { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+    .st-andamento { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    .st-concluido { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+    .st-definir { background: rgba(100, 116, 139, 0.2); color: #94a3b8; }
+    .nav-sair { background: transparent; border: 1px solid #475569; border-radius: 8px; cursor: pointer; font-family: inherit; margin-left: 0.25rem; }
+    .nav-sair:hover { background: #ef4444; border-color: #ef4444; color: #fff !important; }
+    .nav-links { flex-wrap: wrap; align-items: center; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">
+      <div class="logo">ANP</div>
+      <span>Monitor de Atividades</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Dashboard</a>
+      <a href="prazos.html" class="nav-link active">Prazos</a>
+      <a href="5w2h.html" class="nav-link">5W2H</a>
+      <a href="5w2h-lista.html" class="nav-link">5W2H Lista</a>
+      <a href="editar.html" class="nav-link">Editar</a>
+      <a href="admin.html" class="nav-link">Administração</a>
+      <button type="button" class="nav-link nav-sair" id="btn-sair" title="Sair">Sair</button>
+    </div>
+  </nav>
+
+  <main class="container">
+    <header class="page-header">
+      <h1>Atividades e prazos</h1>
+      <p>Visão consolidada de áreas, responsáveis e status de entrega</p>
+    </header>
+
+    <div class="prazos-panel">
+      <div class="prazos-head">
+        <h2>Atividades e prazos</h2>
+        <span class="prazos-summary" id="prazos-summary">Carregando...</span>
+      </div>
+      <div class="prazos-table-wrap">
+        <table class="prazos-table">
+          <thead>
+            <tr>
+              <th>Área</th>
+              <th>Atividade</th>
+              <th>Responsável</th>
+              <th>Previsão de entrega</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="prazos-body">
+            <tr><td colspan="5" style="text-align:center;color:#64748b;padding:2rem">Carregando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/prazos.js"></script>
+  <script>
+    (function () {
+      var btn = document.getElementById("btn-sair");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        try { sessionStorage.removeItem("anp_admin_session"); } catch (e) {}
+        window.location.href = "index.html";
+      });
+    })();
+  </script>
+</body>
+</html>
