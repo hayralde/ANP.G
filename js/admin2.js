@@ -118,6 +118,7 @@ function openCreate() {
   document.getElementById("f-status").value = "A DEFINIR";
   document.getElementById("f-previsao-inicio").value = "";
   document.getElementById("f-previsao-fim").value = "";
+  document.getElementById("f-motivo").value = "";
   document.getElementById("f-obs").value = "";
   document.getElementById("itens-list").innerHTML = "";
   document.getElementById("modal-backdrop").classList.add("open");
@@ -138,6 +139,7 @@ function openEdit(id) {
   document.getElementById("f-status").value = a.status || "A DEFINIR";
   document.getElementById("f-previsao-inicio").value = toIso(a.previsaoInicio || "");
   document.getElementById("f-previsao-fim").value = toIso(a.previsaoFim || a.previsao || "");
+  document.getElementById("f-motivo").value = a.motivo || "";
   document.getElementById("f-obs").value = a.obs || "";
   document.getElementById("itens-list").innerHTML = "";
   (a.detalhes || []).forEach(function (d) { addItemRow(d); });
@@ -196,6 +198,7 @@ function formObj(id) {
     previsaoInicio: fromIso(document.getElementById("f-previsao-inicio").value),
     previsaoFim: fromIso(document.getElementById("f-previsao-fim").value),
     previsao: fromIso(document.getElementById("f-previsao-fim").value),
+    motivo: document.getElementById("f-motivo").value.trim(),
     obs: document.getElementById("f-obs").value.trim(),
     detalhes: collectItens()
   };

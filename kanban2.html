@@ -40,6 +40,8 @@
     .kb-card-meta{display:flex;flex-wrap:wrap;gap:.3rem;align-items:center}
     .kb-chip{font-size:.65rem;font-weight:600;padding:.15rem .4rem;border-radius:6px;background:#0f172a;color:#cbd5e1;border:1px solid #334155}
     .kb-chip.pend{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.3);color:#fca5a5}
+    .kb-chip.motivo{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.35);color:#fcd34d;cursor:pointer;max-width:100%;white-space:normal}
+    .kb-chip.motivo:hover{background:rgba(245,158,11,.22)}
     .kb-chip.area{color:#93c5fd;border-color:#1e3a5f}.kb-chip.date{color:#fcd34d;border-color:#78350f}
     .kb-chip.date.late{background:rgba(244,63,94,.15);border-color:rgba(244,63,94,.35);color:#fda4af}
     .kb-card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:.55rem;gap:.4rem}
@@ -107,6 +109,7 @@
   </main>
   <script src="js/data2.js"></script>
   <script src="js/delete-helper.js"></script>
+  <script src="js/motivo-helper.js"></script>
   <script src="js/kanban2.js"></script>
   <script>(function(){var b=document.getElementById("btn-sair");if(b)b.onclick=function(){try{sessionStorage.removeItem("anp_admin2_session");}catch(e){}location.href="index.html";};})();</script>
 </body>

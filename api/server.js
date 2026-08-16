@@ -27,7 +27,8 @@ function rowToActivity(r) {
     previsaoFim: r.previsao || "",
     obs: r.obs || "",
     status: r.status,
-    categoria: r.categoria
+    categoria: r.categoria,
+    motivo: r.motivo || ""
   };
 }
 
@@ -58,13 +59,18 @@ async function ensureTables() {
   } catch (e) {
     console.warn("alter previsao_inicio", e.message);
   }
+  try {
+    await pool.query(`ALTER TABLE anp_activities_2 ADD COLUMN IF NOT EXISTS motivo TEXT DEFAULT ''`);
+  } catch (e) {
+    console.warn("alter motivo", e.message);
+  }
   const { rows } = await pool.query("SELECT COUNT(*)::int AS n FROM anp_activities_2");
   if (rows[0].n === 0) {
     for (const a of SEED2) {
       await pool.query(
-        `INSERT INTO anp_activities_2 (id,tarefa,subtarefa,detalhes,responsavel,pendencia,tipo_demanda,previsao,previsao_inicio,obs,status,categoria)
-         VALUES ($1,$2,$3,$4::jsonb,$5,$6,$7,$8,$9,$10,$11,$12) ON CONFLICT (id) DO NOTHING`,
-        [a.id, a.tarefa, a.subtarefa, JSON.stringify(a.detalhes), a.responsavel, a.pendencia, a.tipoDemanda, a.previsao || "", a.previsaoInicio || "", a.obs, a.status, a.categoria]
+        `INSERT INTO anp_activities_2 (id,tarefa,subtarefa,detalhes,responsavel,pendencia,tipo_demanda,previsao,previsao_inicio,obs,status,categoria,motivo)
+         VALUES ($1,$2,$3,$4::jsonb,$5,$6,$7,$8,$9,$10,$11,$12,$13) ON CONFLICT (id) DO NOTHING`,
+        [a.id, a.tarefa, a.subtarefa, JSON.stringify(a.detalhes), a.responsavel, a.pendencia, a.tipoDemanda, a.previsao || "", a.previsaoInicio || "", a.obs, a.status, a.categoria, a.motivo || ""]
       );
     }
     console.log("Seeded anp_activities_2");
@@ -132,12 +138,12 @@ app.put("/api/activities2", async (req, res) => {
       const fim = a.previsaoFim || a.previsao || "";
       const ini = a.previsaoInicio || "";
       await client.query(
-        `INSERT INTO anp_activities_2 (id,tarefa,subtarefa,detalhes,responsavel,pendencia,tipo_demanda,previsao,previsao_inicio,obs,status,categoria,updated_at)
-         VALUES ($1,$2,$3,$4::jsonb,$5,$6,$7,$8,$9,$10,$11,$12,NOW())
+        `INSERT INTO anp_activities_2 (id,tarefa,subtarefa,detalhes,responsavel,pendencia,tipo_demanda,previsao,previsao_inicio,obs,status,categoria,motivo,updated_at)
+         VALUES ($1,$2,$3,$4::jsonb,$5,$6,$7,$8,$9,$10,$11,$12,$13,NOW())
          ON CONFLICT (id) DO UPDATE SET tarefa=EXCLUDED.tarefa,subtarefa=EXCLUDED.subtarefa,detalhes=EXCLUDED.detalhes,
            responsavel=EXCLUDED.responsavel,pendencia=EXCLUDED.pendencia,tipo_demanda=EXCLUDED.tipo_demanda,
-           previsao=EXCLUDED.previsao,previsao_inicio=EXCLUDED.previsao_inicio,obs=EXCLUDED.obs,status=EXCLUDED.status,categoria=EXCLUDED.categoria,updated_at=NOW()`,
-        [a.id, a.tarefa, a.subtarefa||"", JSON.stringify(a.detalhes||[]), a.responsavel||"", a.pendencia||"", a.tipoDemanda||"", fim, ini, a.obs||"", a.status||"A DEFINIR", a.categoria||""]
+           previsao=EXCLUDED.previsao,previsao_inicio=EXCLUDED.previsao_inicio,obs=EXCLUDED.obs,status=EXCLUDED.status,categoria=EXCLUDED.categoria,motivo=EXCLUDED.motivo,updated_at=NOW()`,
+        [a.id, a.tarefa, a.subtarefa||"", JSON.stringify(a.detalhes||[]), a.responsavel||"", a.pendencia||"", a.tipoDemanda||"", fim, ini, a.obs||"", a.status||"A DEFINIR", a.categoria||"", a.motivo||""]
       );
     }
     await client.query("COMMIT");

@@ -157,6 +157,7 @@ function cardHtml(a) {
   var pend = a.pendencia && a.pendencia !== "A DEFINIR" && a.pendencia !== "NENHUMA";
   var range = formatRange(a);
   var overdue = isOverdue(a);
+  var parado = normalizeStatus(a.status) === "PARADO";
   return (
     '<article class="kb-card' + (overdue ? " overdue" : "") + '" draggable="true" data-id="' + a.id + '">' +
       '<p class="kb-card-title">' + esc(a.tarefa || "Sem título") + "</p>" +
@@ -166,6 +167,7 @@ function cardHtml(a) {
         '<span class="kb-chip">' + esc(a.responsavel || "A DEFINIR") + "</span>" +
         (pend ? '<span class="kb-chip pend">Pend: ' + esc(a.pendencia) + "</span>" : "") +
         (range ? '<span class="kb-chip date' + (overdue ? " late" : "") + '">' + esc(range) + "</span>" : "") +
+        (parado ? '<span class="kb-chip motivo" data-motivo-id="' + a.id + '">Motivo: ' + esc(a.motivo || "clique para preencher") + "</span>" : "") +
       "</div>" +
       '<div class="kb-card-foot">' +
         '<span class="kb-card-id">#' + a.id + " · " + esc(normalizeStatus(a.status)) + "</span>" +
@@ -218,6 +220,39 @@ function bindFilters() {
     if (ed) {
       e.preventDefault();
       location.href = "admin2.html";
+    }
+
+    var mot = e.target.closest(".kb-chip.motivo");
+    if (mot) {
+      e.preventDefault();
+      e.stopPropagation();
+      var mid = parseInt(mot.dataset.motivoId, 10);
+      var ma = activities.find(function (x) { return x.id === mid; });
+      if (!ma) return;
+      editMotivo(ma);
+    }
+  });
+}
+
+function editMotivo(a) {
+  openAnpMotivo({
+    title: "Motivo do bloqueio",
+    label: "#" + a.id + " — " + (a.tarefa || ""),
+    value: a.motivo || "",
+    onConfirm: async function (val) {
+      var i = activities.findIndex(function (x) { return x.id === a.id; });
+      if (i < 0) return;
+      var prev = activities[i].motivo;
+      activities[i].motivo = val;
+      try {
+        activities = await saveActivities2ToApi(activities);
+        setStatusMsg("Motivo atualizado #" + a.id, "ok");
+        render();
+      } catch (err) {
+        activities[i].motivo = prev;
+        setStatusMsg("Erro ao salvar motivo: " + err.message, "err");
+        throw err;
+      }
     }
   });
 }
@@ -272,16 +307,42 @@ async function moveCard(id, targetCol) {
     newStatus = "PARADO";
   }
 
-  var prev = activities[i].status;
+  var enteringParado = newStatus === "PARADO" && normalizeStatus(activities[i].status) !== "PARADO";
+  if (enteringParado) {
+    var a = activities[i];
+    openAnpMotivo({
+      title: "Motivo do bloqueio",
+      label: "#" + a.id + " — " + (a.tarefa || "") + " está indo para Parado. Informe o motivo:",
+      value: a.motivo || "",
+      required: true,
+      onConfirm: async function (val) {
+        await applyMove(id, newStatus, targetCol, val);
+      }
+    });
+    return;
+  }
+
+  await applyMove(id, newStatus, targetCol, activities[i].motivo || "");
+}
+
+async function applyMove(id, newStatus, targetCol, motivo) {
+  var i = activities.findIndex(function (a) { return a.id === id; });
+  if (i < 0) return;
+
+  var prevStatus = activities[i].status;
+  var prevMotivo = activities[i].motivo;
   activities[i].status = newStatus;
+  activities[i].motivo = motivo || "";
   render();
   setStatusMsg("Salvando…");
   try {
     activities = await saveActivities2ToApi(activities);
     setStatusMsg("Status: " + newStatus + (targetCol === "ATRASADO" ? " (Atrasado = prazo vencido)" : ""), "ok");
   } catch (err) {
-    activities[i].status = prev;
+    activities[i].status = prevStatus;
+    activities[i].motivo = prevMotivo;
     render();
     setStatusMsg("Erro ao salvar: " + err.message, "err");
+    throw err;
   }
 }

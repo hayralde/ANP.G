@@ -26,6 +26,7 @@ function normalizeActivity2(a) {
   }
   if (out.previsaoInicio == null) out.previsaoInicio = "";
   if (!out.pendencia) out.pendencia = "NENHUMA";
+  if (out.motivo == null) out.motivo = "";
   return out;
 }
 
@@ -60,7 +61,8 @@ async function saveActivities2ToApi(activities) {
       previsaoFim: n.previsaoFim || n.previsao || "",
       obs: n.obs,
       status: n.status,
-      categoria: n.categoria
+      categoria: n.categoria,
+      motivo: n.motivo || ""
     };
   });
   const res = await fetch(API_BASE + "/api/activities2", {
