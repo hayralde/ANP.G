@@ -46,11 +46,12 @@
   <section id="admin-section" class="container" style="display:none">
     <header class="page-header">
       <h1>Gerenciar Atividades</h1>
-      <p>Altere os dados e clique em <strong>Salvar alterações</strong>. As mudanças vão para o banco PostgreSQL (Render) e todos veem.</p>
+      <p>As alterações são <strong>salvas automaticamente</strong> no banco PostgreSQL (Render). Todos veem em tempo quase real.</p>
     </header>
 
+    <p id="save-status" class="save-status">—</p>
     <div class="admin-actions">
-      <button type="button" id="btn-save" class="btn btn-primary">Salvar alterações</button>
+      <button type="button" id="btn-save" class="btn btn-primary">Salvar agora</button>
       <button type="button" id="btn-reset" class="btn btn-danger">Restaurar originais</button>
       <button type="button" id="btn-logout" class="btn btn-secondary">Sair</button>
       <a href="index.html" class="btn btn-secondary">Ver Dashboard</a>
