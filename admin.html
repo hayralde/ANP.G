@@ -46,29 +46,11 @@
   <section id="admin-section" class="container" style="display:none">
     <header class="page-header">
       <h1>Gerenciar Atividades</h1>
-      <p>Altere os dados e clique em <strong>Salvar no GitHub</strong>. As mudanças ficam no repositório e todos veem.</p>
+      <p>Altere os dados e clique em <strong>Salvar alterações</strong>. As mudanças vão para o banco PostgreSQL (Render) e todos veem.</p>
     </header>
 
-    <div class="chart-card" style="margin-bottom:1.25rem">
-      <h3 style="margin-bottom:0.75rem">Token do GitHub (Personal Access Token)</h3>
-      <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.75rem">
-        Necessário para gravar no repositório. Fica salvo neste navegador (não vai para o código do site).
-        <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener" style="color:var(--accent)">Criar token fine-grained →</a>
-      </p>
-      <div style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:flex-end">
-        <div class="form-group" style="flex:1;min-width:240px;margin-bottom:0">
-          <label for="gh-token">Token</label>
-          <input type="password" id="gh-token" class="form-input" placeholder="github_pat_..." autocomplete="off" />
-        </div>
-        <button type="button" id="btn-save-token" class="btn btn-secondary">Guardar token neste navegador</button>
-      </div>
-      <p style="font-size:0.75rem;color:var(--text-muted);margin-top:0.5rem">
-        Permissões do token: repositório <strong>hayralde/ANP.G</strong> → Contents: Read and write
-      </p>
-    </div>
-
     <div class="admin-actions">
-      <button type="button" id="btn-save" class="btn btn-primary">Salvar no GitHub</button>
+      <button type="button" id="btn-save" class="btn btn-primary">Salvar alterações</button>
       <button type="button" id="btn-reset" class="btn btn-danger">Restaurar originais</button>
       <button type="button" id="btn-logout" class="btn btn-secondary">Sair</button>
       <a href="index.html" class="btn btn-secondary">Ver Dashboard</a>
