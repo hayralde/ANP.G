@@ -26,6 +26,7 @@
       <a href="prazos.html" class="nav-link">Prazos</a>
       <a href="5w2h.html" class="nav-link">5W2H</a>
       <a href="5w2h-lista.html" class="nav-link">5W2H Lista</a>
+      <a href="5w2h-mapa.html" class="nav-link">5W2H Mapa</a>
       <a href="editar.html" class="nav-link">Editar</a>
       <a href="admin.html" class="nav-link">Administração</a>
       <button type="button" class="nav-link nav-sair" id="btn-sair" title="Sair">Sair</button>
@@ -36,14 +37,14 @@
       <h1>Dashboard — Plano de Ação ANP</h1>
       <p>Acompanhe o progresso das atividades do projeto em tempo real</p>
     </header>
-    <section class="kpi-grid" aria-label="Indicadores principais">
+    <section class="kpi-grid">
       <div class="kpi-card total"><div class="kpi-label">Total de Atividades</div><div class="kpi-value" id="kpi-total">0</div><div class="kpi-sub" id="kpi-pct">0% concluído</div></div>
       <div class="kpi-card concluido"><div class="kpi-label">Concluídas</div><div class="kpi-value" id="kpi-concluido">0</div><div class="kpi-sub">Status finalizado</div></div>
       <div class="kpi-card andamento"><div class="kpi-label">Em Andamento</div><div class="kpi-value" id="kpi-andamento">0</div><div class="kpi-sub">Em execução</div></div>
       <div class="kpi-card parado"><div class="kpi-label">Paradas</div><div class="kpi-value" id="kpi-parado">0</div><div class="kpi-sub">Bloqueadas</div></div>
       <div class="kpi-card definir"><div class="kpi-label">A Definir</div><div class="kpi-value" id="kpi-definir">0</div><div class="kpi-sub">Pendentes de status</div></div>
     </section>
-    <section class="charts-grid" aria-label="Gráficos">
+    <section class="charts-grid">
       <div class="chart-card"><h3>Distribuição por Status</h3><div class="chart-container"><canvas id="chart-status"></canvas></div></div>
       <div class="chart-card"><h3>Atividades por Responsável</h3><div class="chart-container"><canvas id="chart-responsavel"></canvas></div></div>
       <div class="chart-card"><h3>Atividades por Categoria</h3><div class="chart-container"><canvas id="chart-categoria"></canvas></div></div>
