@@ -155,14 +155,37 @@ function render() {
 }
 
 function cardHtml(a) {
-  var pend = normalizeStatus(a.status) !== "EM ANDAMENTO" && a.pendencia && a.pendencia !== "A DEFINIR" && a.pendencia !== "NENHUMA";
+  var st = normalizeStatus(a.status);
+
+  if (st === "CONCLUIDO") {
+    return (
+      '<article class="kb-card done" draggable="true" data-id="' + a.id + '">' +
+        '<p class="kb-card-title">🏆 ' + esc(a.tarefa || "Sem título") + "</p>" +
+        (a.subtarefa ? '<p class="kb-card-sub">' + esc(a.subtarefa) + "</p>" : "") +
+        '<div class="kb-card-meta">' +
+          '<span class="kb-chip">' + esc(a.responsavel || "A DEFINIR") + "</span>" +
+        "</div>" +
+        '<div class="kb-card-foot">' +
+          '<span class="kb-card-id">#' + a.id + " · CONCLUÍDO</span>" +
+          '<div class="kb-card-actions">' +
+            '<button type="button" class="edit" data-id="' + a.id + '">Editar</button>' +
+            '<button type="button" class="del" data-id="' + a.id + '">Excluir</button>' +
+          "</div>" +
+        "</div>" +
+      "</article>"
+    );
+  }
+
+  var pend = st !== "EM ANDAMENTO" && a.pendencia && a.pendencia !== "A DEFINIR" && a.pendencia !== "NENHUMA";
   var range = formatRange(a);
   var overdue = isOverdue(a);
-  var showMotivo = BLOCKED_STATUSES.indexOf(normalizeStatus(a.status)) !== -1;
+  var showMotivo = BLOCKED_STATUSES.indexOf(st) !== -1;
+  var showSubtasks = st === "EM ANDAMENTO" && a.detalhes && a.detalhes.length;
   return (
     '<article class="kb-card' + (overdue ? " overdue" : "") + '" draggable="true" data-id="' + a.id + '">' +
       '<p class="kb-card-title">' + esc(a.tarefa || "Sem título") + "</p>" +
       (a.subtarefa ? '<p class="kb-card-sub">' + esc(a.subtarefa) + "</p>" : "") +
+      (showSubtasks ? '<ul class="kb-card-subtasks">' + a.detalhes.map(function (d) { return "<li>" + esc(d) + "</li>"; }).join("") + "</ul>" : "") +
       '<div class="kb-card-meta">' +
         (a.categoria ? '<span class="kb-chip area">' + esc(a.categoria) + "</span>" : "") +
         '<span class="kb-chip">' + esc(a.responsavel || "A DEFINIR") + "</span>" +
@@ -171,7 +194,7 @@ function cardHtml(a) {
         (showMotivo ? '<span class="kb-chip motivo" data-motivo-id="' + a.id + '">🚩 Motivo: ' + esc(a.motivo || "clique para preencher") + "</span>" : "") +
       "</div>" +
       '<div class="kb-card-foot">' +
-        '<span class="kb-card-id">#' + a.id + " · " + esc(normalizeStatus(a.status)) + "</span>" +
+        '<span class="kb-card-id">#' + a.id + " · " + esc(st) + "</span>" +
         '<div class="kb-card-actions">' +
           '<button type="button" class="edit" data-id="' + a.id + '">Editar</button>' +
           '<button type="button" class="del" data-id="' + a.id + '">Excluir</button>' +
