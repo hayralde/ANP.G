@@ -20,6 +20,7 @@
       <a href="index.html" class="nav-link active">Dashboard</a>
       <a href="5w2h.html" class="nav-link">5W2H</a>
       <a href="5w2h-lista.html" class="nav-link">5W2H Lista</a>
+      <a href="editar.html" class="nav-link">Editar</a>
       <a href="admin.html" class="nav-link">Administração</a>
     </div>
   </nav>
@@ -61,21 +62,15 @@
     <section class="charts-grid" aria-label="Gráficos">
       <div class="chart-card">
         <h3>Distribuição por Status</h3>
-        <div class="chart-container">
-          <canvas id="chart-status"></canvas>
-        </div>
+        <div class="chart-container"><canvas id="chart-status"></canvas></div>
       </div>
       <div class="chart-card">
         <h3>Atividades por Responsável</h3>
-        <div class="chart-container">
-          <canvas id="chart-responsavel"></canvas>
-        </div>
+        <div class="chart-container"><canvas id="chart-responsavel"></canvas></div>
       </div>
       <div class="chart-card">
         <h3>Atividades por Categoria</h3>
-        <div class="chart-container">
-          <canvas id="chart-categoria"></canvas>
-        </div>
+        <div class="chart-container"><canvas id="chart-categoria"></canvas></div>
       </div>
     </section>
 
@@ -84,7 +79,6 @@
         <h1 style="font-size:1.35rem">Atividades do Projeto</h1>
         <p>Visualização em cards de todas as tarefas</p>
       </div>
-
       <div class="filters-bar">
         <div class="filter-group">
           <label for="filter-status">Status</label>
@@ -98,15 +92,11 @@
         </div>
         <div class="filter-group">
           <label for="filter-responsavel">Responsável</label>
-          <select id="filter-responsavel" class="filter-select">
-            <option value="">Todos</option>
-          </select>
+          <select id="filter-responsavel" class="filter-select"><option value="">Todos</option></select>
         </div>
         <div class="filter-group">
           <label for="filter-categoria">Categoria</label>
-          <select id="filter-categoria" class="filter-select">
-            <option value="">Todas</option>
-          </select>
+          <select id="filter-categoria" class="filter-select"><option value="">Todas</option></select>
         </div>
         <div class="filter-group">
           <label for="filter-search">Buscar</label>
@@ -117,11 +107,9 @@
           <button type="button" id="btn-clear-filters" class="btn btn-secondary">Limpar filtros</button>
         </div>
       </div>
-
       <div class="cards-grid" id="cards-container"></div>
     </section>
   </main>
-
   <script src="js/data.js"></script>
   <script src="js/app.js"></script>
 </body>

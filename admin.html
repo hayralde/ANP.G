@@ -25,6 +25,7 @@
       <a href="index.html" class="nav-link">Dashboard</a>
       <a href="5w2h.html" class="nav-link">5W2H</a>
       <a href="5w2h-lista.html" class="nav-link">5W2H Lista</a>
+      <a href="editar.html" class="nav-link">Editar</a>
       <a href="admin.html" class="nav-link active">Administração</a>
     </div>
   </nav>
@@ -32,7 +33,7 @@
   <section id="login-section" class="login-container">
     <div class="login-box">
       <h2>Área Administrativa</h2>
-      <p class="subtitle">Acesse para atualizar status e dados das atividades</p>
+      <p class="subtitle">Acesse para visualizar a tabela de atividades</p>
       <div id="login-error" class="login-error"></div>
       <form id="login-form">
         <div class="form-group">
@@ -43,27 +44,22 @@
           <label for="password">Senha</label>
           <input type="password" id="password" class="form-input" autocomplete="current-password" required placeholder="••••••••" />
         </div>
-        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:0.75rem">
-          Entrar
-        </button>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:0.75rem">Entrar</button>
       </form>
     </div>
   </section>
 
   <section id="admin-section" class="container" style="display:none">
     <header class="page-header">
-      <h1>Gerenciar Atividades</h1>
-      <p>As alterações são <strong>salvas automaticamente</strong> no banco PostgreSQL (Render). Todos veem em tempo quase real.</p>
+      <h1>Visão em tabela</h1>
+      <p>Para editar com o formulário completo, use a aba <strong>Editar</strong>. Alterações na tabela ainda salvam automaticamente.</p>
     </header>
-
     <p id="save-status" class="save-status">—</p>
     <div class="admin-actions">
-      <button type="button" id="btn-save" class="btn btn-primary">Salvar agora</button>
-      <button type="button" id="btn-reset" class="btn btn-danger">Restaurar originais</button>
       <button type="button" id="btn-logout" class="btn btn-secondary">Sair</button>
+      <a href="editar.html" class="btn btn-primary">Ir para Editar</a>
       <a href="index.html" class="btn btn-secondary">Ver Dashboard</a>
     </div>
-
     <div class="admin-table-wrap">
       <table class="admin-table">
         <thead>
