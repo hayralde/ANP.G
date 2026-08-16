@@ -9,69 +9,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    .w2h-list-wrap {
-      overflow-x: auto;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--bg-card);
-    }
-    .w2h-list-table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 1100px;
-      font-size: 0.82rem;
-    }
-    .w2h-list-table thead th {
-      position: sticky;
-      top: 0;
-      background: #0f172a;
-      color: var(--text-secondary);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      padding: 0.85rem 0.75rem;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-      white-space: nowrap;
-      z-index: 1;
-    }
-    .w2h-list-table tbody td {
-      padding: 0.85rem 0.75rem;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-      color: var(--text-primary);
-      line-height: 1.45;
-      max-width: 220px;
-    }
-    .w2h-list-table tbody tr:hover {
-      background: rgba(59, 130, 246, 0.06);
-    }
-    .w2h-list-table .col-id {
-      color: var(--text-muted);
-      font-weight: 700;
-      white-space: nowrap;
-    }
-    .w2h-list-table ul {
-      margin: 0;
-      padding-left: 1rem;
-      color: var(--text-secondary);
-    }
-    .w2h-list-table .th-what { color: #60a5fa; }
-    .w2h-list-table .th-why { color: #c084fc; }
-    .w2h-list-table .th-where { color: #22d3ee; }
-    .w2h-list-table .th-when { color: #fbbf24; }
-    .w2h-list-table .th-who { color: #4ade80; }
-    .w2h-list-table .th-how { color: #f87171; }
-    .w2h-list-table .th-howmuch { color: #f472b6; }
-    .w2h-intro {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1rem 1.25rem;
-      margin-bottom: 1.25rem;
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-    }
+    .w2h-list-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-card); }
+    .w2h-list-table { width: 100%; border-collapse: collapse; min-width: 1100px; font-size: 0.82rem; }
+    .w2h-list-table thead th { position: sticky; top: 0; background: #0f172a; color: var(--text-secondary); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; padding: 0.85rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; z-index: 1; }
+    .w2h-list-table tbody td { padding: 0.85rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-primary); line-height: 1.45; max-width: 220px; }
+    .w2h-list-table tbody tr:hover { background: rgba(59, 130, 246, 0.06); }
+    .w2h-list-table .col-id { color: var(--text-muted); font-weight: 700; white-space: nowrap; }
+    .w2h-list-table ul { margin: 0; padding-left: 1rem; color: var(--text-secondary); }
+    .w2h-list-table .th-what { color: #60a5fa; } .w2h-list-table .th-why { color: #c084fc; } .w2h-list-table .th-where { color: #22d3ee; } .w2h-list-table .th-when { color: #fbbf24; } .w2h-list-table .th-who { color: #4ade80; } .w2h-list-table .th-how { color: #f87171; } .w2h-list-table .th-howmuch { color: #f472b6; }
+    .w2h-intro { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1.25rem; font-size: 0.9rem; color: var(--text-secondary); }
+    .nav-links { flex-wrap: wrap; }
   </style>
 </head>
 <body>
@@ -84,20 +31,16 @@
       <a href="index.html" class="nav-link">Dashboard</a>
       <a href="5w2h.html" class="nav-link">5W2H</a>
       <a href="5w2h-lista.html" class="nav-link active">5W2H Lista</a>
+      <a href="editar.html" class="nav-link">Editar</a>
       <a href="admin.html" class="nav-link">Administração</a>
     </div>
   </nav>
-
   <main class="container">
     <header class="page-header">
       <h1>5W2H em Lista — Plano de Ação ANP</h1>
       <p>Visão tabular: O quê, Por quê, Onde, Quando, Quem, Como e Quanto</p>
     </header>
-
-    <div class="w2h-intro">
-      Formato lista/tabela da matriz <strong>5W2H</strong>. Os dados vêm do mesmo banco do Dashboard.
-    </div>
-
+    <div class="w2h-intro">Formato lista/tabela da matriz <strong>5W2H</strong>. Os dados vêm do mesmo banco do Dashboard.</div>
     <div class="filters-bar">
       <div class="filter-group">
         <label for="filter-status">Status</label>
@@ -111,9 +54,7 @@
       </div>
       <div class="filter-group">
         <label for="filter-responsavel">Responsável</label>
-        <select id="filter-responsavel" class="filter-select">
-          <option value="">Todos</option>
-        </select>
+        <select id="filter-responsavel" class="filter-select"><option value="">Todos</option></select>
       </div>
       <div class="filter-group">
         <label for="filter-search">Buscar</label>
@@ -124,13 +65,11 @@
         <button type="button" id="btn-clear" class="btn btn-secondary">Limpar filtros</button>
       </div>
     </div>
-
     <div class="w2h-list-wrap">
       <table class="w2h-list-table">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Status</th>
+            <th>ID</th><th>Status</th>
             <th class="th-what">What — O quê</th>
             <th class="th-why">Why — Por quê</th>
             <th class="th-where">Where — Onde</th>
@@ -146,7 +85,6 @@
       </table>
     </div>
   </main>
-
   <script src="js/data.js"></script>
   <script src="js/5w2h-lista.js"></script>
 </body>
