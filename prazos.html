@@ -3,38 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Atividades e Prazos | ANP Monitor</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <title>Projeto 1 | Prazos | ANP</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    .prazos-panel{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:1.25rem 1.35rem .5rem}
-    .prazos-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.5rem;margin-bottom:1rem}
-    .prazos-head h2{font-size:1.05rem;font-weight:700;margin:0;color:#f1f5f9}
-    .prazos-summary{font-size:.78rem;color:#64748b}
-    .prazos-table-wrap{overflow-x:auto}
-    .prazos-table{width:100%;border-collapse:collapse;min-width:800px}
-    .prazos-table thead th{text-align:left;font-size:.68rem;font-weight:600;text-transform:uppercase;color:#64748b;padding:.65rem .75rem;border-bottom:1px solid #334155}
-    .prazos-table tbody td{padding:.95rem .75rem;border-bottom:1px solid #293548;vertical-align:middle;font-size:.88rem;color:#e2e8f0}
-    .area-cell{display:flex;align-items:center;gap:.55rem;font-weight:600;font-size:.85rem}
-    .area-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-    .ativ-main{font-weight:600;color:#f1f5f9}.ativ-sub{color:#64748b;font-weight:400}
-    .status-pill{display:inline-flex;align-items:center;gap:.35rem;padding:.28rem .65rem;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase}
-    .status-pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
-    .st-parado{background:rgba(239,68,68,.15);color:#f87171}.st-andamento{background:rgba(245,158,11,.15);color:#fbbf24}.st-concluido{background:rgba(34,197,94,.15);color:#4ade80}.st-definir{background:rgba(100,116,139,.2);color:#94a3b8}
-    .btn-excluir-soft{background:transparent;border:none;color:#64748b;font-size:.75rem;font-weight:600;cursor:pointer;padding:.2rem .4rem;border-radius:6px;font-family:inherit;text-decoration:underline;text-underline-offset:2px}
-    .btn-excluir-soft:hover{color:#ef4444;background:rgba(239,68,68,.08)}
     .nav-links{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem}
     .nav-sair{background:transparent;border:1px solid #475569;border-radius:8px;cursor:pointer;font-family:inherit;padding:.35rem .65rem}
     .nav-sair:hover{background:#ef4444;border-color:#ef4444;color:#fff!important}
+    .prazos-panel{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:1.25rem 1.35rem .5rem}
+    .prazos-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem;margin-bottom:1rem}
+    .prazos-head h2{font-size:1.05rem;margin:0;color:#f1f5f9}
+    .prazos-summary{font-size:.78rem;color:#64748b}
+    .prazos-table{width:100%;border-collapse:collapse;min-width:800px}
+    .prazos-table th{text-align:left;font-size:.68rem;text-transform:uppercase;color:#64748b;padding:.65rem .75rem;border-bottom:1px solid #334155}
+    .prazos-table td{padding:.9rem .75rem;border-bottom:1px solid #293548;font-size:.88rem;color:#e2e8f0}
+    .area-cell{display:flex;align-items:center;gap:.5rem;font-weight:600;font-size:.85rem}
+    .area-dot{width:8px;height:8px;border-radius:50%}
+    .ativ-main{font-weight:600}.ativ-sub{color:#64748b}
+    .status-pill{display:inline-flex;align-items:center;gap:.3rem;padding:.25rem .6rem;border-radius:999px;font-size:.7rem;font-weight:700;text-transform:uppercase}
+    .status-pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+    .st-parado{background:rgba(239,68,68,.15);color:#f87171}.st-andamento{background:rgba(245,158,11,.15);color:#fbbf24}
+    .st-concluido{background:rgba(34,197,94,.15);color:#4ade80}.st-definir{background:rgba(100,116,139,.2);color:#94a3b8}
+    .btn-excluir-soft{background:transparent;border:none;color:#64748b;font-size:.75rem;font-weight:600;cursor:pointer;text-decoration:underline;font-family:inherit}
+    .btn-excluir-soft:hover{color:#ef4444}
   </style>
 </head>
 <body>
   <nav class="navbar">
-    <a href="index.html" class="navbar-brand"><div class="logo">ANP</div><span>Monitor de Atividades</span></a>
+    <a href="index.html" class="navbar-brand"><div class="logo">ANP</div><span>Projeto 1</span></a>
     <div class="nav-links">
-      <a href="index.html" class="nav-link">Dashboard</a>
+      <a href="index.html" class="nav-link">Início</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
       <a href="prazos.html" class="nav-link active">Prazos</a>
       <a href="5w2h.html" class="nav-link">5W2H</a>
       <a href="5w2h-lista.html" class="nav-link">Lista</a>
@@ -45,13 +44,13 @@
     </div>
   </nav>
   <main class="container">
-    <header class="page-header"><h1>Atividades e prazos</h1><p>Áreas, responsáveis e status de entrega</p></header>
+    <header class="page-header"><h1>Prazos — Projeto 1</h1><p>Áreas, responsáveis e status</p></header>
     <div class="prazos-panel">
       <div class="prazos-head"><h2>Atividades e prazos</h2><span class="prazos-summary" id="prazos-summary">Carregando...</span></div>
-      <div class="prazos-table-wrap">
+      <div style="overflow-x:auto">
         <table class="prazos-table">
           <thead><tr><th>Área</th><th>Atividade</th><th>Responsável</th><th>Previsão</th><th>Status</th><th></th></tr></thead>
-          <tbody id="prazos-body"><tr><td colspan="6" style="text-align:center;color:#64748b;padding:2rem">Carregando...</td></tr></tbody>
+          <tbody id="prazos-body"></tbody>
         </table>
       </div>
     </div>
@@ -59,6 +58,6 @@
   <script src="js/data.js"></script>
   <script src="js/delete-helper.js"></script>
   <script src="js/prazos.js"></script>
-  <script>(function(){var b=document.getElementById("btn-sair");if(!b)return;b.addEventListener("click",function(){try{sessionStorage.removeItem("anp_admin_session");}catch(e){}location.href="index.html";});})();</script>
+  <script>(function(){var b=document.getElementById("btn-sair");if(b)b.onclick=function(){try{sessionStorage.removeItem("anp_admin_session");}catch(e){}location.href="index.html";};})();</script>
 </body>
 </html>

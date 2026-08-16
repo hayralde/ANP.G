@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin | ANP Monitor</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <title>Projeto 1 | Admin | ANP</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <style>
@@ -16,9 +14,10 @@
 </head>
 <body>
   <nav class="navbar">
-    <a href="index.html" class="navbar-brand"><div class="logo">ANP</div><span>Monitor de Atividades</span></a>
+    <a href="index.html" class="navbar-brand"><div class="logo">ANP</div><span>Projeto 1</span></a>
     <div class="nav-links">
-      <a href="index.html" class="nav-link">Dashboard</a>
+      <a href="index.html" class="nav-link">Início</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
       <a href="prazos.html" class="nav-link">Prazos</a>
       <a href="5w2h.html" class="nav-link">5W2H</a>
       <a href="5w2h-lista.html" class="nav-link">Lista</a>
@@ -30,7 +29,7 @@
   </nav>
   <section id="login-section" class="login-container">
     <div class="login-box">
-      <h2>Área Administrativa</h2>
+      <h2>Admin — Projeto 1</h2>
       <p class="subtitle">Login para tabela de atividades</p>
       <div id="login-error" class="login-error"></div>
       <form id="login-form">
@@ -41,8 +40,8 @@
     </div>
   </section>
   <section id="admin-section" class="container" style="display:none">
-    <header class="page-header"><h1>Tabela</h1><p>Use a aba <strong>Editar</strong> para o formulário completo.</p></header>
-    <div class="admin-actions"><a href="editar.html" class="btn btn-primary">Ir para Editar</a><a href="index.html" class="btn btn-secondary">Dashboard</a></div>
+    <header class="page-header"><h1>Tabela — Projeto 1</h1><p>Use <strong>Editar</strong> para o formulário completo.</p></header>
+    <div class="admin-actions"><a href="editar.html" class="btn btn-primary">Ir para Editar</a><a href="dashboard.html" class="btn btn-secondary">Dashboard</a></div>
     <div class="admin-table-wrap">
       <table class="admin-table">
         <thead><tr><th>ID</th><th>Tarefa</th><th>Status</th><th>Responsável</th><th>Pendência</th><th>Tipo</th><th>Previsão</th><th>Obs</th></tr></thead>
@@ -52,6 +51,6 @@
   </section>
   <script src="js/data.js"></script>
   <script src="js/admin.js"></script>
-  <script>(function(){var b=document.getElementById("btn-sair");if(!b)return;b.addEventListener("click",function(){try{sessionStorage.removeItem("anp_admin_session");}catch(e){}location.href="index.html";});})();</script>
+  <script>(function(){var b=document.getElementById("btn-sair");if(b)b.onclick=function(){try{sessionStorage.removeItem("anp_admin_session");}catch(e){}location.href="index.html";};})();</script>
 </body>
 </html>
