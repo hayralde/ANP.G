@@ -3,23 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>5W2H | ANP Monitor</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <title>Projeto 1 | 5W2H | ANP</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    .w2h-intro{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:1.25rem;font-size:.9rem;color:var(--text-secondary)}
-    .w2h-grid{display:grid;gap:1.25rem}
-    .w2h-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-    .w2h-card-head{padding:1rem 1.15rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;background:rgba(0,0,0,.15)}
-    .w2h-card-head h2{font-size:1rem;margin:0}
-    .w2h-card-head p{font-size:.8rem;color:var(--text-secondary);margin:.25rem 0 0}
+    .w2h-grid{display:grid;gap:1.25rem}.w2h-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+    .w2h-card-head{padding:1rem 1.15rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:1rem;background:rgba(0,0,0,.15)}
+    .w2h-card-head h2{font-size:1rem;margin:0}.w2h-card-head p{font-size:.8rem;color:var(--text-secondary);margin:.25rem 0 0}
     .w2h-body{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
     .w2h-item{padding:.85rem 1rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border);min-height:90px}
     .w2h-label{font-size:.65rem;text-transform:uppercase;color:var(--text-muted);font-weight:700;margin-bottom:.3rem}
-    .w2h-value{font-size:.82rem;line-height:1.4}
-    .w2h-empty{text-align:center;padding:3rem;color:var(--text-muted)}
+    .w2h-value{font-size:.82rem;line-height:1.4}.w2h-empty{text-align:center;padding:3rem;color:var(--text-muted)}
     .nav-links{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem}
     .nav-sair{background:transparent;border:1px solid #475569;border-radius:8px;cursor:pointer;font-family:inherit;padding:.35rem .65rem}
     .nav-sair:hover{background:#ef4444;border-color:#ef4444;color:#fff!important}
@@ -27,9 +21,10 @@
 </head>
 <body>
   <nav class="navbar">
-    <a href="index.html" class="navbar-brand"><div class="logo">ANP</div><span>Monitor de Atividades</span></a>
+    <a href="index.html" class="navbar-brand"><div class="logo">ANP</div><span>Projeto 1</span></a>
     <div class="nav-links">
-      <a href="index.html" class="nav-link">Dashboard</a>
+      <a href="index.html" class="nav-link">Início</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
       <a href="prazos.html" class="nav-link">Prazos</a>
       <a href="5w2h.html" class="nav-link active">5W2H</a>
       <a href="5w2h-lista.html" class="nav-link">Lista</a>
@@ -40,16 +35,9 @@
     </div>
   </nav>
   <main class="container">
-    <header class="page-header">
-      <h1>Matriz 5W2H</h1>
-      <p>Cada atividade estruturada em O quê, Por quê, Onde, Quando, Quem, Como e Quanto</p>
-    </header>
+    <header class="page-header"><h1>Matriz 5W2H</h1><p>Projeto 1</p></header>
     <div class="filters-bar">
-      <div class="filter-group"><label for="filter-status">Status</label>
-        <select id="filter-status" class="filter-select">
-          <option value="">Todos</option><option value="A DEFINIR">A Definir</option><option value="PARADO">Parado</option><option value="EM ANDAMENTO">Em Andamento</option><option value="CONCLUIDO">Concluído</option>
-        </select>
-      </div>
+      <div class="filter-group"><label for="filter-status">Status</label><select id="filter-status" class="filter-select"><option value="">Todos</option><option value="A DEFINIR">A Definir</option><option value="PARADO">Parado</option><option value="EM ANDAMENTO">Em Andamento</option><option value="CONCLUIDO">Concluído</option></select></div>
       <div class="filter-group"><label for="filter-responsavel">Responsável</label><select id="filter-responsavel" class="filter-select"><option value="">Todos</option></select></div>
       <div class="filter-group"><label for="filter-search">Buscar</label><input type="search" id="filter-search" class="filter-input" placeholder="Tarefa..." /></div>
       <div class="filter-group" style="justify-content:flex-end"><label>&nbsp;</label><button type="button" id="btn-clear" class="btn btn-secondary">Limpar</button></div>
@@ -59,6 +47,6 @@
   <script src="js/data.js"></script>
   <script src="js/delete-helper.js"></script>
   <script src="js/5w2h.js"></script>
-  <script>(function(){var b=document.getElementById("btn-sair");if(!b)return;b.addEventListener("click",function(){try{sessionStorage.removeItem("anp_admin_session");}catch(e){}location.href="index.html";});})();</script>
+  <script>(function(){var b=document.getElementById("btn-sair");if(b)b.onclick=function(){try{sessionStorage.removeItem("anp_admin_session");}catch(e){}location.href="index.html";};})();</script>
 </body>
 </html>

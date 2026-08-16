@@ -3,19 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Editar | ANP Monitor</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <title>Projeto 1 | Editar | ANP</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <style>
     .edit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
-    .edit-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.2rem;cursor:pointer}
-    .edit-card:hover{border-color:#f59e0b}
-    .edit-card h3{font-size:.95rem;margin:0 0 .25rem}.edit-card p{font-size:.8rem;color:var(--text-secondary);margin:0 0 .75rem}
-    .edit-card-meta{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
-    .edit-card-top{display:flex;justify-content:space-between;gap:.5rem;align-items:flex-start}
-    .btn-delete-card{background:transparent;border:none;color:#64748b;font-size:.75rem;font-weight:600;cursor:pointer;text-decoration:underline;font-family:inherit;padding:.2rem}
+    .edit-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;cursor:pointer}
+    .edit-card:hover{border-color:#f59e0b}.edit-card h3{font-size:.95rem;margin:0 0 .25rem}.edit-card p{font-size:.8rem;color:var(--text-secondary);margin:0 0 .75rem}
+    .edit-card-top{display:flex;justify-content:space-between;gap:.5rem}
+    .btn-delete-card{background:transparent;border:none;color:#64748b;font-size:.75rem;font-weight:600;cursor:pointer;text-decoration:underline;font-family:inherit}
     .btn-delete-card:hover{color:#ef4444}
     .edit-toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:1rem}
     .btn-nova{background:#f59e0b;border:none;color:#0f172a;font-weight:700;padding:.55rem 1rem;border-radius:8px;cursor:pointer}
@@ -23,8 +19,7 @@
     .modal-backdrop.open{display:flex}
     .modal{background:#1e293b;border:1px solid #334155;border-radius:16px;width:100%;max-width:480px;padding:1.35rem 1.5rem;max-height:92vh;overflow-y:auto}
     .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.15rem}
-    .modal-header h2{font-size:1.15rem;font-weight:700;margin:0}
-    .modal-close{background:none;border:none;color:var(--text-muted);font-size:1.4rem;cursor:pointer}
+    .modal-header h2{font-size:1.15rem;font-weight:700;margin:0}.modal-close{background:none;border:none;color:var(--text-muted);font-size:1.4rem;cursor:pointer}
     .field{margin-bottom:.9rem}.field label{display:block;font-size:.68rem;font-weight:600;text-transform:uppercase;color:var(--text-muted);margin-bottom:.35rem}
     .field input,.field select,.field textarea{width:100%;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#f1f5f9;padding:.65rem .8rem;font-size:.9rem;font-family:inherit}
     .field textarea{min-height:72px}.field-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
@@ -34,7 +29,7 @@
     .modal-footer{display:flex;justify-content:flex-end;gap:.6rem;margin-top:1.25rem;padding-top:.75rem;border-top:1px solid #334155}
     .btn-cancel{background:transparent;border:1px solid #475569;color:#cbd5e1;padding:.55rem 1rem;border-radius:8px;cursor:pointer}
     .btn-save-modal{background:#f59e0b;border:none;color:#0f172a;font-weight:700;padding:.55rem 1.15rem;border-radius:8px;cursor:pointer}
-    #edit-status-bar{font-size:.85rem;color:var(--text-muted);margin:0}#edit-status-bar.ok{color:#22c55e}#edit-status-bar.err{color:#ef4444}
+    #edit-status-bar{font-size:.85rem;color:var(--text-muted);margin:0}
     .nav-links{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem}
     .nav-sair{background:transparent;border:1px solid #475569;border-radius:8px;cursor:pointer;font-family:inherit;padding:.35rem .65rem}
     .nav-sair:hover{background:#ef4444;border-color:#ef4444;color:#fff!important}
@@ -42,9 +37,10 @@
 </head>
 <body>
   <nav class="navbar">
-    <a href="index.html" class="navbar-brand"><div class="logo">ANP</div><span>Monitor de Atividades</span></a>
+    <a href="index.html" class="navbar-brand"><div class="logo">ANP</div><span>Projeto 1</span></a>
     <div class="nav-links">
-      <a href="index.html" class="nav-link">Dashboard</a>
+      <a href="index.html" class="nav-link">Início</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
       <a href="prazos.html" class="nav-link">Prazos</a>
       <a href="5w2h.html" class="nav-link">5W2H</a>
       <a href="5w2h-lista.html" class="nav-link">Lista</a>
@@ -55,7 +51,7 @@
     </div>
   </nav>
   <main class="container">
-    <header class="page-header"><h1>Editar atividades</h1><p>Clique no card para editar</p></header>
+    <header class="page-header"><h1>Editar — Projeto 1</h1><p>Clique no card para editar</p></header>
     <div class="edit-toolbar"><p id="edit-status-bar">Carregando...</p><button type="button" id="btn-nova" class="btn-nova">+ Nova tarefa</button></div>
     <div class="edit-grid" id="edit-grid"></div>
   </main>
@@ -87,6 +83,6 @@
   </div>
   <script src="js/data.js"></script>
   <script src="js/editar.js"></script>
-  <script>(function(){var b=document.getElementById("btn-sair");if(!b)return;b.addEventListener("click",function(){try{sessionStorage.removeItem("anp_admin_session");}catch(e){}location.href="index.html";});})();</script>
+  <script>(function(){var b=document.getElementById("btn-sair");if(b)b.onclick=function(){try{sessionStorage.removeItem("anp_admin_session");}catch(e){}location.href="index.html";};})();</script>
 </body>
 </html>
