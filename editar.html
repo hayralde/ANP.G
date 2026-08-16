@@ -9,157 +9,89 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    .edit-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1rem;
-    }
-    .edit-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.1rem 1.2rem;
-      cursor: pointer;
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    .edit-card:hover {
-      border-color: #f59e0b;
-      box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.25);
-    }
-    .edit-card h3 { font-size: 0.95rem; margin: 0 0 0.25rem; }
-    .edit-card p { font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 0.75rem; }
-    .edit-card-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
-    .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(2, 6, 23, 0.75);
-      display: none; align-items: center; justify-content: center;
-      z-index: 1000; padding: 1rem; overflow-y: auto;
-    }
-    .modal-backdrop.open { display: flex; }
-    .modal {
-      background: #1e293b; border: 1px solid #334155; border-radius: 16px;
-      width: 100%; max-width: 480px; padding: 1.35rem 1.5rem 1.25rem;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.5); max-height: 92vh; overflow-y: auto;
-    }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.15rem; }
-    .modal-header h2 { font-size: 1.15rem; font-weight: 700; margin: 0; }
-    .modal-close { background: none; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer; line-height: 1; padding: 0.2rem; }
-    .modal-close:hover { color: #fff; }
-    .field { margin-bottom: 0.9rem; }
-    .field label {
-      display: block; font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
-      letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 0.35rem;
-    }
-    .field input, .field select, .field textarea {
-      width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 8px;
-      color: #f1f5f9; padding: 0.65rem 0.8rem; font-size: 0.9rem; font-family: inherit; outline: none;
-    }
-    .field input:focus, .field select:focus, .field textarea:focus {
-      border-color: #f59e0b; box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.25);
-    }
-    .field textarea { min-height: 72px; resize: vertical; }
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-    .itens-box { border: 1px solid #334155; border-radius: 8px; padding: 0.6rem; background: #0f172a; }
-    .item-row { display: flex; gap: 0.4rem; margin-bottom: 0.4rem; }
-    .item-row input { flex: 1; }
-    .item-row button { background: #334155; border: none; color: #94a3b8; border-radius: 6px; width: 32px; cursor: pointer; }
-    .item-row button:hover { background: #ef4444; color: #fff; }
-    .btn-add-item {
-      background: transparent; border: 1px dashed #475569; color: #94a3b8; width: 100%;
-      padding: 0.5rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; margin-top: 0.25rem;
-    }
-    .btn-add-item:hover { border-color: #f59e0b; color: #f59e0b; }
-    .modal-footer {
-      display: flex; justify-content: flex-end; gap: 0.6rem; margin-top: 1.25rem;
-      padding-top: 0.75rem; border-top: 1px solid #334155;
-    }
-    .btn-cancel {
-      background: transparent; border: 1px solid #475569; color: #cbd5e1;
-      padding: 0.55rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.9rem;
-    }
-    .btn-cancel:hover { background: #334155; }
-    .btn-save-modal {
-      background: #f59e0b; border: none; color: #0f172a; font-weight: 700;
-      padding: 0.55rem 1.15rem; border-radius: 8px; cursor: pointer; font-size: 0.9rem;
-    }
-    .btn-save-modal:hover { background: #fbbf24; }
-    .btn-save-modal:disabled { opacity: 0.6; cursor: wait; }
-    #edit-status-bar { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; }
-    #edit-status-bar.ok { color: #22c55e; }
-    #edit-status-bar.err { color: #ef4444; }
+    .edit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+    .edit-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.2rem;cursor:pointer}
+    .edit-card:hover{border-color:#f59e0b}
+    .edit-card h3{font-size:.95rem;margin:0 0 .25rem}
+    .edit-card p{font-size:.8rem;color:var(--text-secondary);margin:0 0 .75rem}
+    .edit-card-meta{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
+    .edit-card-top{display:flex;justify-content:space-between;gap:.5rem;align-items:flex-start}
+    .btn-delete-card{background:transparent;border:1px solid #475569;color:#94a3b8;border-radius:6px;width:28px;height:28px;cursor:pointer}
+    .btn-delete-card:hover{background:#ef4444;border-color:#ef4444;color:#fff}
+    .edit-toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:1rem}
+    .btn-nova{background:#f59e0b;border:none;color:#0f172a;font-weight:700;padding:.55rem 1rem;border-radius:8px;cursor:pointer}
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,.75);display:none;align-items:center;justify-content:center;z-index:1000;padding:1rem;overflow-y:auto}
+    .modal-backdrop.open{display:flex}
+    .modal{background:#1e293b;border:1px solid #334155;border-radius:16px;width:100%;max-width:480px;padding:1.35rem 1.5rem;max-height:92vh;overflow-y:auto}
+    .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.15rem}
+    .modal-header h2{font-size:1.15rem;font-weight:700;margin:0}
+    .modal-close{background:none;border:none;color:var(--text-muted);font-size:1.4rem;cursor:pointer}
+    .field{margin-bottom:.9rem}
+    .field label{display:block;font-size:.68rem;font-weight:600;text-transform:uppercase;color:var(--text-muted);margin-bottom:.35rem}
+    .field input,.field select,.field textarea{width:100%;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#f1f5f9;padding:.65rem .8rem;font-size:.9rem;font-family:inherit}
+    .field input:focus,.field select:focus,.field textarea:focus{border-color:#f59e0b}
+    .field textarea{min-height:72px;resize:vertical}
+    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+    .itens-box{border:1px solid #334155;border-radius:8px;padding:.6rem;background:#0f172a}
+    .item-row{display:flex;gap:.4rem;margin-bottom:.4rem}
+    .item-row input{flex:1}
+    .item-row button{background:#334155;border:none;color:#94a3b8;border-radius:6px;width:32px;cursor:pointer}
+    .btn-add-item{background:transparent;border:1px dashed #475569;color:#94a3b8;width:100%;padding:.5rem;border-radius:6px;cursor:pointer}
+    .modal-footer{display:flex;justify-content:flex-end;gap:.6rem;margin-top:1.25rem;padding-top:.75rem;border-top:1px solid #334155}
+    .btn-cancel{background:transparent;border:1px solid #475569;color:#cbd5e1;padding:.55rem 1rem;border-radius:8px;cursor:pointer}
+    .btn-save-modal{background:#f59e0b;border:none;color:#0f172a;font-weight:700;padding:.55rem 1.15rem;border-radius:8px;cursor:pointer}
+    #edit-status-bar{font-size:.85rem;color:var(--text-muted);margin:0}
+    #edit-status-bar.ok{color:#22c55e}
+    #edit-status-bar.err{color:#ef4444}
+    .nav-sair{background:transparent;border:1px solid #475569;border-radius:8px;cursor:pointer;font-family:inherit;margin-left:.25rem}
+    .nav-sair:hover{background:#ef4444;border-color:#ef4444;color:#fff!important}
+    .nav-links{flex-wrap:wrap;align-items:center}
   </style>
 </head>
 <body>
   <nav class="navbar">
-    <a href="index.html" class="navbar-brand">
-      <div class="logo">ANP</div>
-      <span>Monitor de Atividades</span>
-    </a>
+    <a href="index.html" class="navbar-brand"><div class="logo">ANP</div><span>Monitor de Atividades</span></a>
     <div class="nav-links">
       <a href="index.html" class="nav-link">Dashboard</a>
       <a href="5w2h.html" class="nav-link">5W2H</a>
       <a href="5w2h-lista.html" class="nav-link">5W2H Lista</a>
       <a href="editar.html" class="nav-link active">Editar</a>
       <a href="admin.html" class="nav-link">Administração</a>
+      <button type="button" class="nav-link nav-sair" id="btn-sair" title="Sair">Sair</button>
     </div>
   </nav>
-
   <main class="container">
     <header class="page-header">
       <h1>Editar atividades</h1>
-      <p>Clique em um card para abrir o formulário e alterar os dados</p>
+      <p>Clique em um card para editar. Use Nova tarefa ou o X para excluir.</p>
     </header>
-    <p id="edit-status-bar">Carregando...</p>
+    <div class="edit-toolbar">
+      <p id="edit-status-bar">Carregando...</p>
+      <button type="button" id="btn-nova" class="btn-nova">+ Nova tarefa</button>
+    </div>
     <div class="edit-grid" id="edit-grid"></div>
   </main>
-
-  <div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true">
+  <div class="modal-backdrop" id="modal-backdrop">
     <div class="modal">
       <div class="modal-header">
-        <h2>Editar atividade</h2>
-        <button type="button" class="modal-close" id="modal-close" aria-label="Fechar">&times;</button>
+        <h2 id="modal-title">Editar atividade</h2>
+        <button type="button" class="modal-close" id="modal-close">&times;</button>
       </div>
       <form id="edit-form">
         <input type="hidden" id="f-id" />
-        <div class="field">
-          <label for="f-area">Área</label>
-          <select id="f-area"></select>
-        </div>
-        <div class="field">
-          <label for="f-tarefa">Tarefa</label>
-          <input type="text" id="f-tarefa" required />
-        </div>
-        <div class="field">
-          <label for="f-subtarefa">Subtarefa</label>
-          <input type="text" id="f-subtarefa" />
+        <div class="field"><label for="f-area">Área</label><select id="f-area"></select></div>
+        <div class="field"><label for="f-tarefa">Tarefa</label><input type="text" id="f-tarefa" required /></div>
+        <div class="field"><label for="f-subtarefa">Subtarefa</label><input type="text" id="f-subtarefa" /></div>
+        <div class="field-row">
+          <div class="field"><label for="f-responsavel">Responsável</label><select id="f-responsavel"></select></div>
+          <div class="field"><label for="f-pendencia">Pendência de</label><select id="f-pendencia"></select></div>
         </div>
         <div class="field-row">
-          <div class="field">
-            <label for="f-responsavel">Responsável</label>
-            <select id="f-responsavel"></select>
-          </div>
-          <div class="field">
-            <label for="f-pendencia">Pendência de</label>
-            <select id="f-pendencia"></select>
-          </div>
+          <div class="field"><label for="f-tipo">Tipo de demanda</label><select id="f-tipo"></select></div>
+          <div class="field"><label for="f-status">Status</label><select id="f-status"></select></div>
         </div>
-        <div class="field-row">
-          <div class="field">
-            <label for="f-tipo">Tipo de demanda</label>
-            <select id="f-tipo"></select>
-          </div>
-          <div class="field">
-            <label for="f-status">Status</label>
-            <select id="f-status"></select>
-          </div>
-        </div>
-        <div class="field">
-          <label for="f-previsao">Previsão de entrega</label>
-          <input type="date" id="f-previsao" />
-        </div>
-        <div class="field">
-          <label for="f-obs">Observações</label>
-          <textarea id="f-obs"></textarea>
-        </div>
+        <div class="field"><label for="f-previsao">Previsão de entrega</label><input type="date" id="f-previsao" /></div>
+        <div class="field"><label for="f-obs">Observações</label><textarea id="f-obs"></textarea></div>
         <div class="field">
           <label>Itens / Sub-ações</label>
           <div class="itens-box">
@@ -174,8 +106,34 @@
       </form>
     </div>
   </div>
-
+  <div class="modal-backdrop" id="delete-backdrop">
+    <div class="modal" style="max-width:400px">
+      <div class="modal-header">
+        <h2>Excluir atividade</h2>
+        <button type="button" class="modal-close" id="btn-cancel-delete-x">&times;</button>
+      </div>
+      <p id="delete-label" style="font-size:.9rem;color:var(--text-secondary);margin:0 0 1rem"></p>
+      <div class="field"><label for="delete-pass">Senha do administrador</label>
+        <input type="password" id="delete-pass" placeholder="Senha admin" autocomplete="current-password" />
+      </div>
+      <p id="delete-error" style="color:#ef4444;font-size:.85rem;min-height:1.2rem"></p>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" id="btn-cancel-delete">Cancelar</button>
+        <button type="button" class="btn-save-modal" id="btn-confirm-delete" style="background:#ef4444;color:#fff">Excluir</button>
+      </div>
+    </div>
+  </div>
   <script src="js/data.js"></script>
   <script src="js/editar.js"></script>
+  <script>
+    (function () {
+      var btn = document.getElementById("btn-sair");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        try { sessionStorage.removeItem("anp_admin_session"); } catch (e) {}
+        window.location.href = "index.html";
+      });
+    })();
+  </script>
 </body>
 </html>
