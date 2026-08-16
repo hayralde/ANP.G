@@ -3,76 +3,55 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Administração | ANP Monitor</title>
+  <title>Admin | ANP Monitor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    .save-status { font-size: 0.85rem; color: var(--text-muted); margin: 0 0 0.75rem; min-height: 1.25rem; }
-    .nav-sair { background: transparent; border: 1px solid #475569; border-radius: 8px; cursor: pointer; font-family: inherit; margin-left: 0.25rem; }
-    .nav-sair:hover { background: #ef4444; border-color: #ef4444; color: #fff !important; }
-    .nav-links { flex-wrap: wrap; align-items: center; }
+    .nav-links{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem}
+    .nav-sair{background:transparent;border:1px solid #475569;border-radius:8px;cursor:pointer;font-family:inherit;padding:.35rem .65rem}
+    .nav-sair:hover{background:#ef4444;border-color:#ef4444;color:#fff!important}
   </style>
 </head>
 <body>
   <nav class="navbar">
-    <a href="index.html" class="navbar-brand">
-      <div class="logo">ANP</div>
-      <span>Monitor de Atividades</span>
-    </a>
+    <a href="index.html" class="navbar-brand"><div class="logo">ANP</div><span>Monitor de Atividades</span></a>
     <div class="nav-links">
       <a href="index.html" class="nav-link">Dashboard</a>
       <a href="prazos.html" class="nav-link">Prazos</a>
       <a href="5w2h.html" class="nav-link">5W2H</a>
-      <a href="5w2h-lista.html" class="nav-link">5W2H Lista</a>
+      <a href="5w2h-lista.html" class="nav-link">Lista</a>
+      <a href="5w2h-mapa.html" class="nav-link">Mapa</a>
       <a href="editar.html" class="nav-link">Editar</a>
-      <a href="admin.html" class="nav-link active">Administração</a>
-      <button type="button" class="nav-link nav-sair" id="btn-sair" title="Sair">Sair</button>
+      <a href="admin.html" class="nav-link active">Admin</a>
+      <button type="button" class="nav-link nav-sair" id="btn-sair">Sair</button>
     </div>
   </nav>
   <section id="login-section" class="login-container">
     <div class="login-box">
       <h2>Área Administrativa</h2>
-      <p class="subtitle">Acesse para visualizar a tabela de atividades</p>
+      <p class="subtitle">Login para tabela de atividades</p>
       <div id="login-error" class="login-error"></div>
       <form id="login-form">
-        <div class="form-group"><label for="username">Usuário</label>
-          <input type="text" id="username" class="form-input" autocomplete="username" required placeholder="admin" /></div>
-        <div class="form-group"><label for="password">Senha</label>
-          <input type="password" id="password" class="form-input" autocomplete="current-password" required placeholder="••••••••" /></div>
-        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:0.75rem">Entrar</button>
+        <div class="form-group"><label for="username">Usuário</label><input type="text" id="username" class="form-input" required placeholder="admin" /></div>
+        <div class="form-group"><label for="password">Senha</label><input type="password" id="password" class="form-input" required /></div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:.75rem">Entrar</button>
       </form>
     </div>
   </section>
   <section id="admin-section" class="container" style="display:none">
-    <header class="page-header">
-      <h1>Visão em tabela</h1>
-      <p>Para editar, use a aba <strong>Editar</strong>.</p>
-    </header>
-    <p id="save-status" class="save-status">—</p>
-    <div class="admin-actions">
-      <a href="editar.html" class="btn btn-primary">Ir para Editar</a>
-      <a href="index.html" class="btn btn-secondary">Ver Dashboard</a>
-    </div>
+    <header class="page-header"><h1>Tabela</h1><p>Use a aba <strong>Editar</strong> para o formulário completo.</p></header>
+    <div class="admin-actions"><a href="editar.html" class="btn btn-primary">Ir para Editar</a><a href="index.html" class="btn btn-secondary">Dashboard</a></div>
     <div class="admin-table-wrap">
       <table class="admin-table">
-        <thead><tr><th>ID</th><th>Tarefa / Subtarefa</th><th>Status</th><th>Responsável</th><th>Pendência</th><th>Tipo</th><th>Previsão</th><th>Observação</th></tr></thead>
+        <thead><tr><th>ID</th><th>Tarefa</th><th>Status</th><th>Responsável</th><th>Pendência</th><th>Tipo</th><th>Previsão</th><th>Obs</th></tr></thead>
         <tbody id="admin-tbody"></tbody>
       </table>
     </div>
   </section>
   <script src="js/data.js"></script>
   <script src="js/admin.js"></script>
-  <script>
-    (function () {
-      var btn = document.getElementById("btn-sair");
-      if (!btn) return;
-      btn.addEventListener("click", function () {
-        try { sessionStorage.removeItem("anp_admin_session"); } catch (e) {}
-        window.location.href = "index.html";
-      });
-    })();
-  </script>
+  <script>(function(){var b=document.getElementById("btn-sair");if(!b)return;b.addEventListener("click",function(){try{sessionStorage.removeItem("anp_admin_session");}catch(e){}location.href="index.html";});})();</script>
 </body>
 </html>
