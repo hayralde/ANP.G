@@ -10,17 +10,17 @@
     .nav-links{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem}
     .nav-sair{background:transparent;border:1px solid #475569;border-radius:8px;cursor:pointer;font-family:inherit;padding:.35rem .65rem}
     .nav-sair:hover{background:#ef4444;border-color:#ef4444;color:#fff!important}
-    .kb-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.75rem;margin-bottom:1rem}
+    .kb-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:.75rem;margin-bottom:1rem}
     .kb-kpi{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:.75rem .9rem}
     .kb-kpi .l{font-size:.68rem;text-transform:uppercase;color:#64748b;font-weight:700;margin-bottom:.2rem}
     .kb-kpi .v{font-size:1.35rem;font-weight:800;color:#f1f5f9}
-    .kb-kpi.parado .v{color:#f87171}.kb-kpi.andamento .v{color:#fbbf24}.kb-kpi.concluido .v{color:#4ade80}.kb-kpi.definir .v{color:#94a3b8}
+    .kb-kpi.parado .v{color:#f87171}.kb-kpi.andamento .v{color:#fbbf24}.kb-kpi.concluido .v{color:#4ade80}.kb-kpi.definir .v{color:#94a3b8}.kb-kpi.atrasado .v{color:#fb7185}
     .kb-filters{display:flex;flex-wrap:wrap;gap:.75rem;align-items:flex-end;margin-bottom:1.1rem;background:#1e293b;border:1px solid #334155;border-radius:12px;padding:.85rem 1rem}
     .kb-filters label{display:block;font-size:.65rem;text-transform:uppercase;color:#64748b;font-weight:700;margin-bottom:.25rem}
     .kb-filters select,.kb-filters input{background:#0f172a;border:1px solid #334155;border-radius:8px;color:#f1f5f9;padding:.45rem .65rem;font-size:.85rem;font-family:inherit;min-width:140px}
     .kb-status{font-size:.8rem;color:#64748b;margin-left:auto}.kb-status.ok{color:#22c55e}.kb-status.err{color:#ef4444}
-    .kb-board{display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:1rem;align-items:start;overflow-x:auto;padding-bottom:.5rem}
-    @media (max-width:1100px){.kb-board{grid-template-columns:repeat(2,minmax(240px,1fr))}}
+    .kb-board{display:grid;grid-template-columns:repeat(5,minmax(200px,1fr));gap:1rem;align-items:start;overflow-x:auto;padding-bottom:.5rem}
+    @media (max-width:1200px){.kb-board{grid-template-columns:repeat(3,minmax(220px,1fr))}}
     @media (max-width:640px){.kb-board{grid-template-columns:1fr}}
     .kb-col{background:#0f172a;border:1px solid #334155;border-radius:14px;min-height:320px;display:flex;flex-direction:column}
     .kb-col-head{padding:.75rem .9rem;border-bottom:1px solid #334155;display:flex;justify-content:space-between;align-items:center;gap:.5rem;border-radius:14px 14px 0 0}
@@ -28,18 +28,20 @@
     .kb-count{background:#1e293b;color:#94a3b8;font-size:.72rem;font-weight:700;padding:.15rem .45rem;border-radius:999px;min-width:1.4rem;text-align:center}
     .kb-col.definir .kb-col-head{background:rgba(100,116,139,.15)}.kb-col.parado .kb-col-head{background:rgba(239,68,68,.12)}
     .kb-col.andamento .kb-col-head{background:rgba(245,158,11,.12)}.kb-col.concluido .kb-col-head{background:rgba(34,197,94,.12)}
+    .kb-col.atrasado .kb-col-head{background:rgba(244,63,94,.15)}
     .kb-col.definir .kb-col-head h3{color:#94a3b8}.kb-col.parado .kb-col-head h3{color:#f87171}
-    .kb-col.andamento .kb-col-head h3{color:#fbbf24}.kb-col.concluido .kb-col-head h3{color:#4ade80}
+    .kb-col.andamento .kb-col-head h3{color:#fbbf24}.kb-col.concluido .kb-col-head h3{color:#4ade80}.kb-col.atrasado .kb-col-head h3{color:#fb7185}
     .kb-col-body{padding:.65rem;display:flex;flex-direction:column;gap:.55rem;flex:1;min-height:200px}
     .kb-col-body.drag-over{background:rgba(245,158,11,.08);outline:2px dashed #f59e0b;outline-offset:-4px;border-radius:0 0 12px 12px}
-    .kb-card{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:.7rem .75rem;cursor:grab;transition:border-color .15s,box-shadow .15s,opacity .15s}
-    .kb-card:hover{border-color:#475569}.kb-card.dragging{opacity:.45;cursor:grabbing}
+    .kb-card{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:.7rem .75rem;cursor:grab}
+    .kb-card:hover{border-color:#475569}.kb-card.dragging{opacity:.45;cursor:grabbing}.kb-card.overdue{border-color:rgba(244,63,94,.45)}
     .kb-card-title{font-size:.85rem;font-weight:700;color:#f1f5f9;line-height:1.3;margin:0 0 .2rem}
     .kb-card-sub{font-size:.72rem;color:#94a3b8;margin:0 0 .55rem;line-height:1.35}
     .kb-card-meta{display:flex;flex-wrap:wrap;gap:.3rem;align-items:center}
     .kb-chip{font-size:.65rem;font-weight:600;padding:.15rem .4rem;border-radius:6px;background:#0f172a;color:#cbd5e1;border:1px solid #334155}
     .kb-chip.pend{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.3);color:#fca5a5}
     .kb-chip.area{color:#93c5fd;border-color:#1e3a5f}.kb-chip.date{color:#fcd34d;border-color:#78350f}
+    .kb-chip.date.late{background:rgba(244,63,94,.15);border-color:rgba(244,63,94,.35);color:#fda4af}
     .kb-card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:.55rem;gap:.4rem}
     .kb-card-id{font-size:.65rem;color:#64748b}
     .kb-card-actions{display:flex;gap:.25rem}
@@ -62,12 +64,13 @@
   <main class="container">
     <header class="page-header">
       <h1>Kanban — Projeto 2</h1>
-      <p>Arraste os cards entre colunas para atualizar o status. Veja onde cada atividade está parada.</p>
+      <p>Arraste os cards para mudar o status. Cards com <strong>data final</strong> vencida aparecem em <strong>Atrasado</strong>.</p>
     </header>
     <div class="kb-summary">
       <div class="kb-kpi definir"><div class="l">A definir</div><div class="v" id="kpi-definir">0</div></div>
       <div class="kb-kpi parado"><div class="l">Parado</div><div class="v" id="kpi-parado">0</div></div>
       <div class="kb-kpi andamento"><div class="l">Em andamento</div><div class="v" id="kpi-andamento">0</div></div>
+      <div class="kb-kpi atrasado"><div class="l">Atrasado</div><div class="v" id="kpi-atrasado">0</div></div>
       <div class="kb-kpi concluido"><div class="l">Concluído</div><div class="v" id="kpi-concluido">0</div></div>
       <div class="kb-kpi"><div class="l">Total</div><div class="v" id="kpi-total">0</div></div>
     </div>
@@ -90,6 +93,10 @@
       </div>
       <div class="kb-col andamento" data-status="EM ANDAMENTO">
         <div class="kb-col-head"><h3>Em andamento</h3><span class="kb-count" data-count>0</span></div>
+        <div class="kb-col-body" data-drop></div>
+      </div>
+      <div class="kb-col atrasado" data-status="ATRASADO">
+        <div class="kb-col-head"><h3>Atrasado</h3><span class="kb-count" data-count>0</span></div>
         <div class="kb-col-body" data-drop></div>
       </div>
       <div class="kb-col concluido" data-status="CONCLUIDO">
