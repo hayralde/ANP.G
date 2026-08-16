@@ -13,6 +13,20 @@
     .save-status.pending { color: #f59e0b; }
     .save-status.ok { color: #22c55e; }
     .save-status.err { color: #ef4444; }
+    .nav-sair {
+      background: transparent;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      margin-left: 0.25rem;
+    }
+    .nav-sair:hover {
+      background: #ef4444;
+      border-color: #ef4444;
+      color: #fff !important;
+    }
+    .nav-links { flex-wrap: wrap; align-items: center; }
   </style>
 </head>
 <body>
@@ -27,6 +41,7 @@
       <a href="5w2h-lista.html" class="nav-link">5W2H Lista</a>
       <a href="editar.html" class="nav-link">Editar</a>
       <a href="admin.html" class="nav-link active">Administração</a>
+      <button type="button" class="nav-link nav-sair" id="btn-sair" title="Sair">Sair</button>
     </div>
   </nav>
 
@@ -52,11 +67,10 @@
   <section id="admin-section" class="container" style="display:none">
     <header class="page-header">
       <h1>Visão em tabela</h1>
-      <p>Para editar com o formulário completo, use a aba <strong>Editar</strong>. Alterações na tabela ainda salvam automaticamente.</p>
+      <p>Para editar com o formulário completo, use a aba <strong>Editar</strong>.</p>
     </header>
     <p id="save-status" class="save-status">—</p>
     <div class="admin-actions">
-      <button type="button" id="btn-logout" class="btn btn-secondary">Sair</button>
       <a href="editar.html" class="btn btn-primary">Ir para Editar</a>
       <a href="index.html" class="btn btn-secondary">Ver Dashboard</a>
     </div>
@@ -81,5 +95,15 @@
 
   <script src="js/data.js"></script>
   <script src="js/admin.js"></script>
+  <script>
+    (function () {
+      var btn = document.getElementById("btn-sair");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        try { sessionStorage.removeItem("anp_admin_session"); } catch (e) {}
+        window.location.href = "index.html";
+      });
+    })();
+  </script>
 </body>
 </html>

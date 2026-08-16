@@ -8,6 +8,22 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .nav-sair {
+      background: transparent;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      margin-left: 0.25rem;
+    }
+    .nav-sair:hover {
+      background: #ef4444;
+      border-color: #ef4444;
+      color: #fff !important;
+    }
+    .nav-links { flex-wrap: wrap; align-items: center; }
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
@@ -22,6 +38,7 @@
       <a href="5w2h-lista.html" class="nav-link">5W2H Lista</a>
       <a href="editar.html" class="nav-link">Editar</a>
       <a href="admin.html" class="nav-link">Administração</a>
+      <button type="button" class="nav-link nav-sair" id="btn-sair" title="Sair">Sair</button>
     </div>
   </nav>
 
@@ -112,5 +129,15 @@
   </main>
   <script src="js/data.js"></script>
   <script src="js/app.js"></script>
+  <script>
+    (function () {
+      var btn = document.getElementById("btn-sair");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        try { sessionStorage.removeItem("anp_admin_session"); } catch (e) {}
+        window.location.href = "index.html";
+      });
+    })();
+  </script>
 </body>
 </html>
