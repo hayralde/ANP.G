@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5W2H Lista | ANP Monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .w2h-list-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+    }
+    .w2h-list-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1100px;
+      font-size: 0.82rem;
+    }
+    .w2h-list-table thead th {
+      position: sticky;
+      top: 0;
+      background: #0f172a;
+      color: var(--text-secondary);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.85rem 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      z-index: 1;
+    }
+    .w2h-list-table tbody td {
+      padding: 0.85rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      color: var(--text-primary);
+      line-height: 1.45;
+      max-width: 220px;
+    }
+    .w2h-list-table tbody tr:hover {
+      background: rgba(59, 130, 246, 0.06);
+    }
+    .w2h-list-table .col-id {
+      color: var(--text-muted);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .w2h-list-table ul {
+      margin: 0;
+      padding-left: 1rem;
+      color: var(--text-secondary);
+    }
+    .w2h-list-table .th-what { color: #60a5fa; }
+    .w2h-list-table .th-why { color: #c084fc; }
+    .w2h-list-table .th-where { color: #22d3ee; }
+    .w2h-list-table .th-when { color: #fbbf24; }
+    .w2h-list-table .th-who { color: #4ade80; }
+    .w2h-list-table .th-how { color: #f87171; }
+    .w2h-list-table .th-howmuch { color: #f472b6; }
+    .w2h-intro {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">
+      <div class="logo">ANP</div>
+      <span>Monitor de Atividades</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Dashboard</a>
+      <a href="5w2h.html" class="nav-link">5W2H</a>
+      <a href="5w2h-lista.html" class="nav-link active">5W2H Lista</a>
+      <a href="admin.html" class="nav-link">Administração</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <header class="page-header">
+      <h1>5W2H em Lista — Plano de Ação ANP</h1>
+      <p>Visão tabular: O quê, Por quê, Onde, Quando, Quem, Como e Quanto</p>
+    </header>
+
+    <div class="w2h-intro">
+      Formato lista/tabela da matriz <strong>5W2H</strong>. Os dados vêm do mesmo banco do Dashboard.
+    </div>
+
+    <div class="filters-bar">
+      <div class="filter-group">
+        <label for="filter-status">Status</label>
+        <select id="filter-status" class="filter-select">
+          <option value="">Todos</option>
+          <option value="A DEFINIR">A Definir</option>
+          <option value="PARADO">Parado</option>
+          <option value="EM ANDAMENTO">Em Andamento</option>
+          <option value="CONCLUIDO">Concluído</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="filter-responsavel">Responsável</label>
+        <select id="filter-responsavel" class="filter-select">
+          <option value="">Todos</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="filter-search">Buscar</label>
+        <input type="search" id="filter-search" class="filter-input" placeholder="Tarefa, subtarefa..." />
+      </div>
+      <div class="filter-group" style="justify-content:flex-end">
+        <label>&nbsp;</label>
+        <button type="button" id="btn-clear" class="btn btn-secondary">Limpar filtros</button>
+      </div>
+    </div>
+
+    <div class="w2h-list-wrap">
+      <table class="w2h-list-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Status</th>
+            <th class="th-what">What — O quê</th>
+            <th class="th-why">Why — Por quê</th>
+            <th class="th-where">Where — Onde</th>
+            <th class="th-when">When — Quando</th>
+            <th class="th-who">Who — Quem</th>
+            <th class="th-how">How — Como</th>
+            <th class="th-howmuch">How much — Quanto</th>
+          </tr>
+        </thead>
+        <tbody id="w2h-list-body">
+          <tr><td colspan="9" style="text-align:center;padding:2rem;color:var(--text-muted)">Carregando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/5w2h-lista.js"></script>
+</body>
+</html>
