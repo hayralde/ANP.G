@@ -37,6 +37,16 @@ async function showAdmin() {
   activities = await loadActivities2();
   setStatus("Pronto");
   renderCards();
+  openEditFromQuery();
+}
+
+function openEditFromQuery() {
+  var params = new URLSearchParams(location.search);
+  var editId = parseInt(params.get("edit"), 10);
+  if (!editId) return;
+  var a = activities.find(function (x) { return x.id === editId; });
+  if (a) openEdit(editId);
+  history.replaceState(null, "", location.pathname);
 }
 
 function fillSelects() {

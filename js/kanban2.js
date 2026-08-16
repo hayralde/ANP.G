@@ -154,7 +154,7 @@ function render() {
 }
 
 function cardHtml(a) {
-  var pend = a.pendencia && a.pendencia !== "A DEFINIR" && a.pendencia !== "NENHUMA";
+  var pend = normalizeStatus(a.status) !== "EM ANDAMENTO" && a.pendencia && a.pendencia !== "A DEFINIR" && a.pendencia !== "NENHUMA";
   var range = formatRange(a);
   var overdue = isOverdue(a);
   var parado = normalizeStatus(a.status) === "PARADO";
@@ -219,7 +219,7 @@ function bindFilters() {
     var ed = e.target.closest(".kb-card-actions .edit");
     if (ed) {
       e.preventDefault();
-      location.href = "admin2.html";
+      location.href = "admin2.html?edit=" + ed.dataset.id;
     }
 
     var mot = e.target.closest(".kb-chip.motivo");
