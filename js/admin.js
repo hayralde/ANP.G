@@ -28,7 +28,7 @@ function isLoggedIn() {
 }
 
 function getToken() {
-  return sessionStorage.getItem(TOKEN_KEY) || "";
+  return localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY) || "";
 }
 
 function showLogin() {
@@ -79,8 +79,9 @@ function saveToken() {
     showToast("Cole o Personal Access Token do GitHub.", "error");
     return;
   }
-  sessionStorage.setItem(TOKEN_KEY, token);
-  showToast("Token salvo nesta sessão (não fica no código).", "success");
+  localStorage.setItem(TOKEN_KEY, token);
+  sessionStorage.removeItem(TOKEN_KEY);
+  showToast("Token salvo neste navegador (não fica no código do site).", "success");
 }
 
 function renderAdminTable() {
@@ -157,7 +158,7 @@ async function saveAll() {
     document.getElementById("gh-token").focus();
     return;
   }
-  sessionStorage.setItem(TOKEN_KEY, token);
+  localStorage.setItem(TOKEN_KEY, token);
 
   collectFromTable();
   var btn = document.getElementById("btn-save");
