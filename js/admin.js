@@ -1,12 +1,17 @@
 // ============================================
 // ANP Monitor - Administração (API Render)
+// Auto-save ao alterar campos
 // ============================================
 
 const ADMIN_USER = "admin";
 const ADMIN_PASS = "admin123";
 const SESSION_KEY = "anp_admin_session";
+const AUTOSAVE_MS = 800;
 
 let activities = [];
+let saveTimer = null;
+let saving = false;
+let pendingSave = false;
 
 document.addEventListener("DOMContentLoaded", function () {
   if (isLoggedIn()) {
@@ -17,8 +22,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("login-form").addEventListener("submit", handleLogin);
   document.getElementById("btn-logout").addEventListener("click", handleLogout);
-  document.getElementById("btn-save").addEventListener("click", saveAll);
-  document.getElementById("btn-reset").addEventListener("click", handleReset);
+
+  var btnSave = document.getElementById("btn-save");
+  if (btnSave) btnSave.addEventListener("click", function () { saveAll(true); });
+
+  var btnReset = document.getElementById("btn-reset");
+  if (btnReset) btnReset.addEventListener("click", handleReset);
 });
 
 function isLoggedIn() {
@@ -33,9 +42,11 @@ function showLogin() {
 function showAdminPanel() {
   document.getElementById("login-section").style.display = "none";
   document.getElementById("admin-section").style.display = "block";
+  setSaveStatus("Carregando...");
   loadActivities().then(function (data) {
     activities = data;
     renderAdminTable();
+    setSaveStatus("Pronto — alterações salvam automaticamente");
   });
 }
 
@@ -63,6 +74,13 @@ function handleLogout() {
   document.getElementById("password").value = "";
 }
 
+function setSaveStatus(text, kind) {
+  var el = document.getElementById("save-status");
+  if (!el) return;
+  el.textContent = text;
+  el.className = "save-status" + (kind ? " " + kind : "");
+}
+
 function renderAdminTable() {
   var tbody = document.getElementById("admin-tbody");
   tbody.innerHTML = activities.map(function (a) {
@@ -84,7 +102,10 @@ function renderAdminTable() {
   }).join("");
 
   tbody.querySelectorAll("select, input").forEach(function (el) {
-    el.addEventListener("change", markDirty);
+    el.addEventListener("change", scheduleAutoSave);
+    if (el.tagName === "INPUT" && el.type === "text") {
+      el.addEventListener("input", scheduleAutoSave);
+    }
   });
 }
 
@@ -110,9 +131,12 @@ function formatDateForDisplay(iso) {
   return p[2] + "/" + p[1] + "/" + p[0];
 }
 
-function markDirty() {
-  var btn = document.getElementById("btn-save");
-  if (btn) btn.textContent = "Salvar *";
+function scheduleAutoSave() {
+  setSaveStatus("Alteração detectada — salvando em instantes...", "pending");
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(function () {
+    saveAll(false);
+  }, AUTOSAVE_MS);
 }
 
 function collectFromTable() {
@@ -130,24 +154,33 @@ function collectFromTable() {
   });
 }
 
-async function saveAll() {
+async function saveAll(manual) {
+  if (saving) {
+    pendingSave = true;
+    return;
+  }
   collectFromTable();
+  saving = true;
+  setSaveStatus("Salvando no banco...", "pending");
+
   var btn = document.getElementById("btn-save");
-  var original = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = "Salvando...";
+  if (btn) btn.disabled = true;
 
   try {
     activities = await saveActivitiesToApi(activities);
-    btn.textContent = "Salvar alterações";
-    showToast("Salvo no banco de dados! Todos veem as mudanças.", "success");
-    renderAdminTable();
+    setSaveStatus("Salvo automaticamente ✓", "ok");
+    if (manual) showToast("Salvo no banco de dados!", "success");
   } catch (e) {
     console.error(e);
+    setSaveStatus("Erro ao salvar: " + e.message, "err");
     showToast("Erro ao salvar: " + e.message, "error");
-    btn.textContent = original;
   } finally {
-    btn.disabled = false;
+    saving = false;
+    if (btn) btn.disabled = false;
+    if (pendingSave) {
+      pendingSave = false;
+      scheduleAutoSave();
+    }
   }
 }
 
@@ -157,6 +190,7 @@ async function handleReset() {
   renderAdminTable();
   try {
     activities = await saveActivitiesToApi(activities);
+    setSaveStatus("Originais restaurados e salvos ✓", "ok");
     showToast("Dados restaurados e salvos no banco.", "success");
   } catch (e) {
     showToast("Restaurado na tela, mas falhou ao salvar: " + e.message, "error");
@@ -174,7 +208,7 @@ function showToast(msg, type) {
   }
   toast.textContent = msg;
   toast.className = "toast " + type + " show";
-  setTimeout(function () { toast.classList.remove("show"); }, 4000);
+  setTimeout(function () { toast.classList.remove("show"); }, 3500);
 }
 
 function escapeHtml(str) {
