@@ -7,8 +7,8 @@ const RESPONSAVEIS = ["BRUNA", "ROSE", "JOSÉ", "GESTÃO|PROCESSO", "A DEFINIR"]
 const TIPOS_DEMANDA = ["ADEQUAÇÃO", "NOVO"];
 const PENDENCIAS = ["PROCESSO", "GESTÃO", "SISTEMA", "MATERIAL", "DOCUMENTAÇÃO", "A DEFINIR"];
 
-// URL da API no Render — atualize após o deploy do Web Service
-const API_BASE = "https://anp-api.onrender.com";
+// URL da API no Render
+const API_BASE = "https://anp-g.onrender.com";
 
 const DEFAULT_ACTIVITIES = [
   { id: 1, tarefa: "INDICADORES KPI", subtarefa: "CRIAR PAINEL", detalhes: [], responsavel: "A DEFINIR", pendencia: "A DEFINIR", tipoDemanda: "NOVO", previsao: "", obs: "", status: "A DEFINIR", categoria: "Indicadores" },
