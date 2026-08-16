@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin 2 | ANP Monitor</title>
+  <title>Projeto 2 | Admin 2 | ANP</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <style>
@@ -42,24 +42,18 @@
 </head>
 <body>
   <nav class="navbar">
-    <a href="index.html" class="navbar-brand"><div class="logo">ANP</div><span>Monitor de Atividades</span></a>
+    <a href="index.html" class="navbar-brand"><div class="logo">ANP</div><span>Projeto 2</span></a>
     <div class="nav-links">
-      <a href="index.html" class="nav-link">Dashboard</a>
-      <a href="prazos.html" class="nav-link">Prazos</a>
+      <a href="index.html" class="nav-link">Início</a>
       <a href="prazos2.html" class="nav-link">Prazos 2</a>
-      <a href="5w2h.html" class="nav-link">5W2H</a>
-      <a href="5w2h-lista.html" class="nav-link">Lista</a>
-      <a href="5w2h-mapa.html" class="nav-link">Mapa</a>
-      <a href="editar.html" class="nav-link">Editar</a>
-      <a href="admin.html" class="nav-link">Admin</a>
       <a href="admin2.html" class="nav-link active">Admin 2</a>
       <button type="button" class="nav-link nav-sair" id="btn-sair">Sair</button>
     </div>
   </nav>
   <section id="login-section" class="login-container">
     <div class="login-box">
-      <h2>Admin 2 — Plano 2</h2>
-      <p class="subtitle">Gerencie atividades do segundo plano (planilha)</p>
+      <h2>Admin 2 — Projeto 2</h2>
+      <p class="subtitle">CRUD do Plano 2 (planilha)</p>
       <div id="login-error" class="login-error"></div>
       <form id="login-form">
         <div class="form-group"><label for="username">Usuário</label><input type="text" id="username" class="form-input" required placeholder="admin" /></div>
@@ -69,7 +63,7 @@
     </div>
   </section>
   <section id="admin-section" class="container" style="display:none">
-    <header class="page-header"><h1>Admin 2 — CRUD Plano 2</h1><p>Adicionar, editar e excluir. Padrão da planilha (sem 5W2H).</p></header>
+    <header class="page-header"><h1>Admin 2 — CRUD</h1><p>Adicionar, editar e excluir atividades do Projeto 2</p></header>
     <div class="toolbar"><span id="status-bar">—</span><button type="button" class="btn-nova" id="btn-nova">+ Nova atividade</button></div>
     <div class="edit-grid" id="edit-grid"></div>
   </section>
@@ -94,6 +88,6 @@
   <script src="js/data2.js"></script>
   <script src="js/delete-helper.js"></script>
   <script src="js/admin2.js"></script>
-  <script>(function(){var b=document.getElementById("btn-sair");if(b)b.onclick=function(){try{sessionStorage.removeItem("anp_admin2_session");sessionStorage.removeItem("anp_admin_session");}catch(e){}location.href="index.html";};})();</script>
+  <script>(function(){var b=document.getElementById("btn-sair");if(b)b.onclick=function(){try{sessionStorage.removeItem("anp_admin2_session");}catch(e){}location.href="index.html";};})();</script>
 </body>
 </html>

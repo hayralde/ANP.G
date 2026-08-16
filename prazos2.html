@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Prazos 2 | ANP Monitor</title>
+  <title>Projeto 2 | Prazos 2 | ANP</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <style>
@@ -30,24 +30,18 @@
 </head>
 <body>
   <nav class="navbar">
-    <a href="index.html" class="navbar-brand"><div class="logo">ANP</div><span>Monitor de Atividades</span></a>
+    <a href="index.html" class="navbar-brand"><div class="logo">ANP</div><span>Projeto 2</span></a>
     <div class="nav-links">
-      <a href="index.html" class="nav-link">Dashboard</a>
-      <a href="prazos.html" class="nav-link">Prazos</a>
+      <a href="index.html" class="nav-link">Início</a>
       <a href="prazos2.html" class="nav-link active">Prazos 2</a>
-      <a href="5w2h.html" class="nav-link">5W2H</a>
-      <a href="5w2h-lista.html" class="nav-link">Lista</a>
-      <a href="5w2h-mapa.html" class="nav-link">Mapa</a>
-      <a href="editar.html" class="nav-link">Editar</a>
-      <a href="admin.html" class="nav-link">Admin</a>
       <a href="admin2.html" class="nav-link">Admin 2</a>
       <button type="button" class="nav-link nav-sair" id="btn-sair">Sair</button>
     </div>
   </nav>
   <main class="container">
     <header class="page-header">
-      <h1>Prazos 2 — Plano de Ação</h1>
-      <p>Dados do Plano 2 (planilha). Sem 5W2H.</p>
+      <h1>Prazos 2 — Projeto 2</h1>
+      <p>Plano independente · padrão da planilha · sem 5W2H</p>
     </header>
     <div class="prazos-panel">
       <div class="prazos-head"><h2>Atividades e prazos</h2><span class="prazos-summary" id="prazos-summary">Carregando...</span></div>
@@ -62,6 +56,6 @@
   <script src="js/data2.js"></script>
   <script src="js/delete-helper.js"></script>
   <script src="js/prazos2.js"></script>
-  <script>(function(){var b=document.getElementById("btn-sair");if(b)b.onclick=function(){try{sessionStorage.removeItem("anp_admin_session");}catch(e){}location.href="index.html";};})();</script>
+  <script>(function(){var b=document.getElementById("btn-sair");if(b)b.onclick=function(){try{sessionStorage.removeItem("anp_admin2_session");}catch(e){}location.href="index.html";};})();</script>
 </body>
 </html>
