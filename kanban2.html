@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projeto 2 | Kanban | ANP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .nav-links{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem}
+    .nav-sair{background:transparent;border:1px solid #475569;border-radius:8px;cursor:pointer;font-family:inherit;padding:.35rem .65rem}
+    .nav-sair:hover{background:#ef4444;border-color:#ef4444;color:#fff!important}
+    .kb-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.75rem;margin-bottom:1rem}
+    .kb-kpi{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:.75rem .9rem}
+    .kb-kpi .l{font-size:.68rem;text-transform:uppercase;color:#64748b;font-weight:700;margin-bottom:.2rem}
+    .kb-kpi .v{font-size:1.35rem;font-weight:800;color:#f1f5f9}
+    .kb-kpi.parado .v{color:#f87171}.kb-kpi.andamento .v{color:#fbbf24}.kb-kpi.concluido .v{color:#4ade80}.kb-kpi.definir .v{color:#94a3b8}
+    .kb-filters{display:flex;flex-wrap:wrap;gap:.75rem;align-items:flex-end;margin-bottom:1.1rem;background:#1e293b;border:1px solid #334155;border-radius:12px;padding:.85rem 1rem}
+    .kb-filters label{display:block;font-size:.65rem;text-transform:uppercase;color:#64748b;font-weight:700;margin-bottom:.25rem}
+    .kb-filters select,.kb-filters input{background:#0f172a;border:1px solid #334155;border-radius:8px;color:#f1f5f9;padding:.45rem .65rem;font-size:.85rem;font-family:inherit;min-width:140px}
+    .kb-status{font-size:.8rem;color:#64748b;margin-left:auto}.kb-status.ok{color:#22c55e}.kb-status.err{color:#ef4444}
+    .kb-board{display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:1rem;align-items:start;overflow-x:auto;padding-bottom:.5rem}
+    @media (max-width:1100px){.kb-board{grid-template-columns:repeat(2,minmax(240px,1fr))}}
+    @media (max-width:640px){.kb-board{grid-template-columns:1fr}}
+    .kb-col{background:#0f172a;border:1px solid #334155;border-radius:14px;min-height:320px;display:flex;flex-direction:column}
+    .kb-col-head{padding:.75rem .9rem;border-bottom:1px solid #334155;display:flex;justify-content:space-between;align-items:center;gap:.5rem;border-radius:14px 14px 0 0}
+    .kb-col-head h3{margin:0;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.03em}
+    .kb-count{background:#1e293b;color:#94a3b8;font-size:.72rem;font-weight:700;padding:.15rem .45rem;border-radius:999px;min-width:1.4rem;text-align:center}
+    .kb-col.definir .kb-col-head{background:rgba(100,116,139,.15)}.kb-col.parado .kb-col-head{background:rgba(239,68,68,.12)}
+    .kb-col.andamento .kb-col-head{background:rgba(245,158,11,.12)}.kb-col.concluido .kb-col-head{background:rgba(34,197,94,.12)}
+    .kb-col.definir .kb-col-head h3{color:#94a3b8}.kb-col.parado .kb-col-head h3{color:#f87171}
+    .kb-col.andamento .kb-col-head h3{color:#fbbf24}.kb-col.concluido .kb-col-head h3{color:#4ade80}
+    .kb-col-body{padding:.65rem;display:flex;flex-direction:column;gap:.55rem;flex:1;min-height:200px}
+    .kb-col-body.drag-over{background:rgba(245,158,11,.08);outline:2px dashed #f59e0b;outline-offset:-4px;border-radius:0 0 12px 12px}
+    .kb-card{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:.7rem .75rem;cursor:grab;transition:border-color .15s,box-shadow .15s,opacity .15s}
+    .kb-card:hover{border-color:#475569}.kb-card.dragging{opacity:.45;cursor:grabbing}
+    .kb-card-title{font-size:.85rem;font-weight:700;color:#f1f5f9;line-height:1.3;margin:0 0 .2rem}
+    .kb-card-sub{font-size:.72rem;color:#94a3b8;margin:0 0 .55rem;line-height:1.35}
+    .kb-card-meta{display:flex;flex-wrap:wrap;gap:.3rem;align-items:center}
+    .kb-chip{font-size:.65rem;font-weight:600;padding:.15rem .4rem;border-radius:6px;background:#0f172a;color:#cbd5e1;border:1px solid #334155}
+    .kb-chip.pend{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.3);color:#fca5a5}
+    .kb-chip.area{color:#93c5fd;border-color:#1e3a5f}.kb-chip.date{color:#fcd34d;border-color:#78350f}
+    .kb-card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:.55rem;gap:.4rem}
+    .kb-card-id{font-size:.65rem;color:#64748b}
+    .kb-card-actions{display:flex;gap:.25rem}
+    .kb-card-actions button{background:transparent;border:none;color:#64748b;font-size:.7rem;font-weight:600;cursor:pointer;padding:.15rem .3rem;font-family:inherit;text-decoration:underline}
+    .kb-card-actions button:hover{color:#f59e0b}.kb-card-actions button.del:hover{color:#ef4444}
+    .kb-empty{font-size:.78rem;color:#475569;text-align:center;padding:1.5rem .5rem}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand"><div class="logo">ANP</div><span>Projeto 2</span></a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Início</a>
+      <a href="kanban2.html" class="nav-link active">Kanban</a>
+      <a href="prazos2.html" class="nav-link">Prazos 2</a>
+      <a href="admin2.html" class="nav-link">Admin 2</a>
+      <button type="button" class="nav-link nav-sair" id="btn-sair">Sair</button>
+    </div>
+  </nav>
+  <main class="container">
+    <header class="page-header">
+      <h1>Kanban — Projeto 2</h1>
+      <p>Arraste os cards entre colunas para atualizar o status. Veja onde cada atividade está parada.</p>
+    </header>
+    <div class="kb-summary">
+      <div class="kb-kpi definir"><div class="l">A definir</div><div class="v" id="kpi-definir">0</div></div>
+      <div class="kb-kpi parado"><div class="l">Parado</div><div class="v" id="kpi-parado">0</div></div>
+      <div class="kb-kpi andamento"><div class="l">Em andamento</div><div class="v" id="kpi-andamento">0</div></div>
+      <div class="kb-kpi concluido"><div class="l">Concluído</div><div class="v" id="kpi-concluido">0</div></div>
+      <div class="kb-kpi"><div class="l">Total</div><div class="v" id="kpi-total">0</div></div>
+    </div>
+    <div class="kb-filters">
+      <div><label for="f-pendencia">Pendência</label><select id="f-pendencia"><option value="">Todas</option></select></div>
+      <div><label for="f-responsavel">Responsável</label><select id="f-responsavel"><option value="">Todos</option></select></div>
+      <div><label for="f-area">Área</label><select id="f-area"><option value="">Todas</option></select></div>
+      <div><label for="f-search">Buscar</label><input type="search" id="f-search" placeholder="Tarefa..." /></div>
+      <button type="button" class="btn btn-secondary" id="btn-clear" style="align-self:flex-end">Limpar</button>
+      <span class="kb-status" id="kb-status"></span>
+    </div>
+    <div class="kb-board" id="kb-board">
+      <div class="kb-col definir" data-status="A DEFINIR">
+        <div class="kb-col-head"><h3>A definir</h3><span class="kb-count" data-count>0</span></div>
+        <div class="kb-col-body" data-drop></div>
+      </div>
+      <div class="kb-col parado" data-status="PARADO">
+        <div class="kb-col-head"><h3>Parado</h3><span class="kb-count" data-count>0</span></div>
+        <div class="kb-col-body" data-drop></div>
+      </div>
+      <div class="kb-col andamento" data-status="EM ANDAMENTO">
+        <div class="kb-col-head"><h3>Em andamento</h3><span class="kb-count" data-count>0</span></div>
+        <div class="kb-col-body" data-drop></div>
+      </div>
+      <div class="kb-col concluido" data-status="CONCLUIDO">
+        <div class="kb-col-head"><h3>Concluído</h3><span class="kb-count" data-count>0</span></div>
+        <div class="kb-col-body" data-drop></div>
+      </div>
+    </div>
+  </main>
+  <script src="js/data2.js"></script>
+  <script src="js/delete-helper.js"></script>
+  <script src="js/kanban2.js"></script>
+  <script>(function(){var b=document.getElementById("btn-sair");if(b)b.onclick=function(){try{sessionStorage.removeItem("anp_admin2_session");}catch(e){}location.href="index.html";};})();</script>
+</body>
+</html>
