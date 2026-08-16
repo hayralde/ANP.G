@@ -22,15 +22,15 @@
     .w2h-body { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; }
     .w2h-item { padding: 1rem 1.15rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); min-height: 100px; }
     @media (min-width: 900px) { .w2h-body { grid-template-columns: repeat(4, 1fr); } .w2h-item:nth-child(4n) { border-right: none; } .w2h-item:nth-child(n+5) { border-bottom: none; } }
-    @media (max-width: 899px) and (min-width: 600px) { .w2h-body { grid-template-columns: repeat(2, 1fr); } .w2h-item:nth-child(2n) { border-right: none; } }
-    @media (max-width: 599px) { .w2h-body { grid-template-columns: 1fr; } .w2h-item { border-right: none; } }
     .w2h-letter { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; margin-bottom: 0.5rem; color: #fff; }
     .w2h-letter.what { background: #3b82f6; } .w2h-letter.why { background: #a855f7; } .w2h-letter.where { background: #06b6d4; } .w2h-letter.when { background: #f59e0b; } .w2h-letter.who { background: #22c55e; } .w2h-letter.how { background: #ef4444; } .w2h-letter.howmuch { background: #ec4899; }
     .w2h-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); font-weight: 700; margin-bottom: 0.35rem; }
     .w2h-value { font-size: 0.85rem; font-weight: 500; color: var(--text-primary); line-height: 1.45; }
     .w2h-value ul { margin: 0.25rem 0 0; padding-left: 1rem; color: var(--text-secondary); font-size: 0.8rem; }
     .w2h-empty { text-align: center; padding: 3rem; color: var(--text-muted); }
-    .nav-links { flex-wrap: wrap; }
+    .nav-sair { background: transparent; border: 1px solid #475569; border-radius: 8px; cursor: pointer; font-family: inherit; margin-left: 0.25rem; }
+    .nav-sair:hover { background: #ef4444; border-color: #ef4444; color: #fff !important; }
+    .nav-links { flex-wrap: wrap; align-items: center; }
   </style>
 </head>
 <body>
@@ -45,9 +45,9 @@
       <a href="5w2h-lista.html" class="nav-link">5W2H Lista</a>
       <a href="editar.html" class="nav-link">Editar</a>
       <a href="admin.html" class="nav-link">Administração</a>
+      <button type="button" class="nav-link nav-sair" id="btn-sair" title="Sair">Sair</button>
     </div>
   </nav>
-
   <main class="container">
     <header class="page-header">
       <h1>Matriz 5W2H — Plano de Ação ANP</h1>
@@ -66,8 +66,7 @@
       </div>
     </div>
     <div class="filters-bar">
-      <div class="filter-group">
-        <label for="filter-status">Status</label>
+      <div class="filter-group"><label for="filter-status">Status</label>
         <select id="filter-status" class="filter-select">
           <option value="">Todos</option>
           <option value="A DEFINIR">A Definir</option>
@@ -76,16 +75,13 @@
           <option value="CONCLUIDO">Concluído</option>
         </select>
       </div>
-      <div class="filter-group">
-        <label for="filter-responsavel">Responsável</label>
+      <div class="filter-group"><label for="filter-responsavel">Responsável</label>
         <select id="filter-responsavel" class="filter-select"><option value="">Todos</option></select>
       </div>
-      <div class="filter-group">
-        <label for="filter-search">Buscar</label>
+      <div class="filter-group"><label for="filter-search">Buscar</label>
         <input type="search" id="filter-search" class="filter-input" placeholder="Tarefa, subtarefa..." />
       </div>
-      <div class="filter-group" style="justify-content:flex-end">
-        <label>&nbsp;</label>
+      <div class="filter-group" style="justify-content:flex-end"><label>&nbsp;</label>
         <button type="button" id="btn-clear" class="btn btn-secondary">Limpar filtros</button>
       </div>
     </div>
@@ -93,5 +89,15 @@
   </main>
   <script src="js/data.js"></script>
   <script src="js/5w2h.js"></script>
+  <script>
+    (function () {
+      var btn = document.getElementById("btn-sair");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        try { sessionStorage.removeItem("anp_admin_session"); } catch (e) {}
+        window.location.href = "index.html";
+      });
+    })();
+  </script>
 </body>
 </html>

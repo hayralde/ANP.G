@@ -13,12 +13,13 @@
     .w2h-list-table { width: 100%; border-collapse: collapse; min-width: 1100px; font-size: 0.82rem; }
     .w2h-list-table thead th { position: sticky; top: 0; background: #0f172a; color: var(--text-secondary); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; padding: 0.85rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; z-index: 1; }
     .w2h-list-table tbody td { padding: 0.85rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-primary); line-height: 1.45; max-width: 220px; }
-    .w2h-list-table tbody tr:hover { background: rgba(59, 130, 246, 0.06); }
-    .w2h-list-table .col-id { color: var(--text-muted); font-weight: 700; white-space: nowrap; }
+    .w2h-list-table .col-id { color: var(--text-muted); font-weight: 700; }
     .w2h-list-table ul { margin: 0; padding-left: 1rem; color: var(--text-secondary); }
-    .w2h-list-table .th-what { color: #60a5fa; } .w2h-list-table .th-why { color: #c084fc; } .w2h-list-table .th-where { color: #22d3ee; } .w2h-list-table .th-when { color: #fbbf24; } .w2h-list-table .th-who { color: #4ade80; } .w2h-list-table .th-how { color: #f87171; } .w2h-list-table .th-howmuch { color: #f472b6; }
+    .th-what { color: #60a5fa; } .th-why { color: #c084fc; } .th-where { color: #22d3ee; } .th-when { color: #fbbf24; } .th-who { color: #4ade80; } .th-how { color: #f87171; } .th-howmuch { color: #f472b6; }
     .w2h-intro { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1.25rem; font-size: 0.9rem; color: var(--text-secondary); }
-    .nav-links { flex-wrap: wrap; }
+    .nav-sair { background: transparent; border: 1px solid #475569; border-radius: 8px; cursor: pointer; font-family: inherit; margin-left: 0.25rem; }
+    .nav-sair:hover { background: #ef4444; border-color: #ef4444; color: #fff !important; }
+    .nav-links { flex-wrap: wrap; align-items: center; }
   </style>
 </head>
 <body>
@@ -33,17 +34,17 @@
       <a href="5w2h-lista.html" class="nav-link active">5W2H Lista</a>
       <a href="editar.html" class="nav-link">Editar</a>
       <a href="admin.html" class="nav-link">Administração</a>
+      <button type="button" class="nav-link nav-sair" id="btn-sair" title="Sair">Sair</button>
     </div>
   </nav>
   <main class="container">
     <header class="page-header">
       <h1>5W2H em Lista — Plano de Ação ANP</h1>
-      <p>Visão tabular: O quê, Por quê, Onde, Quando, Quem, Como e Quanto</p>
+      <p>Visão tabular da matriz 5W2H</p>
     </header>
-    <div class="w2h-intro">Formato lista/tabela da matriz <strong>5W2H</strong>. Os dados vêm do mesmo banco do Dashboard.</div>
+    <div class="w2h-intro">Formato lista/tabela. Dados do mesmo banco do Dashboard.</div>
     <div class="filters-bar">
-      <div class="filter-group">
-        <label for="filter-status">Status</label>
+      <div class="filter-group"><label for="filter-status">Status</label>
         <select id="filter-status" class="filter-select">
           <option value="">Todos</option>
           <option value="A DEFINIR">A Definir</option>
@@ -52,16 +53,13 @@
           <option value="CONCLUIDO">Concluído</option>
         </select>
       </div>
-      <div class="filter-group">
-        <label for="filter-responsavel">Responsável</label>
+      <div class="filter-group"><label for="filter-responsavel">Responsável</label>
         <select id="filter-responsavel" class="filter-select"><option value="">Todos</option></select>
       </div>
-      <div class="filter-group">
-        <label for="filter-search">Buscar</label>
-        <input type="search" id="filter-search" class="filter-input" placeholder="Tarefa, subtarefa..." />
+      <div class="filter-group"><label for="filter-search">Buscar</label>
+        <input type="search" id="filter-search" class="filter-input" placeholder="Tarefa..." />
       </div>
-      <div class="filter-group" style="justify-content:flex-end">
-        <label>&nbsp;</label>
+      <div class="filter-group" style="justify-content:flex-end"><label>&nbsp;</label>
         <button type="button" id="btn-clear" class="btn btn-secondary">Limpar filtros</button>
       </div>
     </div>
@@ -87,5 +85,15 @@
   </main>
   <script src="js/data.js"></script>
   <script src="js/5w2h-lista.js"></script>
+  <script>
+    (function () {
+      var btn = document.getElementById("btn-sair");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        try { sessionStorage.removeItem("anp_admin_session"); } catch (e) {}
+        window.location.href = "index.html";
+      });
+    })();
+  </script>
 </body>
 </html>
