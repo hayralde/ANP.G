@@ -23,7 +23,6 @@ function areaColor(area) {
   for (var j = 0; j < area.length; j++) h = area.charCodeAt(j) + ((h << 5) - h);
   return "hsl(" + (Math.abs(h) % 360) + " 70% 55%)";
 }
-
 function areaLabel(a) {
   var c = a.categoria || "";
   var t = (a.tarefa || "").toUpperCase();
@@ -37,14 +36,12 @@ function areaLabel(a) {
   if (t.indexOf("POP") !== -1) return "POP";
   return a.tarefa || "Geral";
 }
-
 function statusClass(s) {
   if (s === "PARADO") return "st-parado";
   if (s === "EM ANDAMENTO") return "st-andamento";
   if (s === "CONCLUIDO") return "st-concluido";
   return "st-definir";
 }
-
 function escapeHtml(str) {
   if (!str) return "";
   var amp = ["&","a","m","p",";"].join("");
@@ -53,7 +50,6 @@ function escapeHtml(str) {
   var quot = ["&","q","u","o","t",";"].join("");
   return String(str).replace(/&/g, amp).replace(/</g, lt).replace(/>/g, gt).replace(/"/g, quot);
 }
-
 function hasPrazo(p) {
   if (!p) return false;
   var s = String(p).trim().toLowerCase();
@@ -81,13 +77,13 @@ function render(list) {
       "<td>" + escapeHtml(a.responsavel || "A DEFINIR") + "</td>" +
       "<td>" + escapeHtml(previsao) + "</td>" +
       '<td><span class="status-pill ' + statusClass(a.status) + '">' + escapeHtml(a.status || "A DEFINIR") + "</span></td>" +
-      '<td><button type="button" class="btn-excluir" data-id="' + a.id + '">✕ Excluir</button></td>' +
+      '<td><button type="button" class="btn-excluir-soft" data-id="' + a.id + '">Excluir</button></td>' +
       "</tr>";
   }).join("");
 }
 
 document.addEventListener("click", function (e) {
-  var btn = e.target.closest(".btn-excluir");
+  var btn = e.target.closest(".btn-excluir-soft");
   if (!btn || !btn.dataset.id) return;
   var id = parseInt(btn.dataset.id, 10);
   var list = window._prazosList || [];
