@@ -9,19 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    .nav-sair {
-      background: transparent;
-      border: 1px solid #475569;
-      border-radius: 8px;
-      cursor: pointer;
-      font-family: inherit;
-      margin-left: 0.25rem;
-    }
-    .nav-sair:hover {
-      background: #ef4444;
-      border-color: #ef4444;
-      color: #fff !important;
-    }
+    .nav-sair { background: transparent; border: 1px solid #475569; border-radius: 8px; cursor: pointer; font-family: inherit; margin-left: 0.25rem; }
+    .nav-sair:hover { background: #ef4444; border-color: #ef4444; color: #fff !important; }
     .nav-links { flex-wrap: wrap; align-items: center; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -34,6 +23,7 @@
     </a>
     <div class="nav-links">
       <a href="index.html" class="nav-link active">Dashboard</a>
+      <a href="prazos.html" class="nav-link">Prazos</a>
       <a href="5w2h.html" class="nav-link">5W2H</a>
       <a href="5w2h-lista.html" class="nav-link">5W2H Lista</a>
       <a href="editar.html" class="nav-link">Editar</a>
@@ -41,88 +31,35 @@
       <button type="button" class="nav-link nav-sair" id="btn-sair" title="Sair">Sair</button>
     </div>
   </nav>
-
   <main class="container">
     <header class="page-header">
       <h1>Dashboard — Plano de Ação ANP</h1>
       <p>Acompanhe o progresso das atividades do projeto em tempo real</p>
     </header>
-
     <section class="kpi-grid" aria-label="Indicadores principais">
-      <div class="kpi-card total">
-        <div class="kpi-label">Total de Atividades</div>
-        <div class="kpi-value" id="kpi-total">0</div>
-        <div class="kpi-sub" id="kpi-pct">0% concluído</div>
-      </div>
-      <div class="kpi-card concluido">
-        <div class="kpi-label">Concluídas</div>
-        <div class="kpi-value" id="kpi-concluido">0</div>
-        <div class="kpi-sub">Status finalizado</div>
-      </div>
-      <div class="kpi-card andamento">
-        <div class="kpi-label">Em Andamento</div>
-        <div class="kpi-value" id="kpi-andamento">0</div>
-        <div class="kpi-sub">Em execução</div>
-      </div>
-      <div class="kpi-card parado">
-        <div class="kpi-label">Paradas</div>
-        <div class="kpi-value" id="kpi-parado">0</div>
-        <div class="kpi-sub">Bloqueadas</div>
-      </div>
-      <div class="kpi-card definir">
-        <div class="kpi-label">A Definir</div>
-        <div class="kpi-value" id="kpi-definir">0</div>
-        <div class="kpi-sub">Pendentes de status</div>
-      </div>
+      <div class="kpi-card total"><div class="kpi-label">Total de Atividades</div><div class="kpi-value" id="kpi-total">0</div><div class="kpi-sub" id="kpi-pct">0% concluído</div></div>
+      <div class="kpi-card concluido"><div class="kpi-label">Concluídas</div><div class="kpi-value" id="kpi-concluido">0</div><div class="kpi-sub">Status finalizado</div></div>
+      <div class="kpi-card andamento"><div class="kpi-label">Em Andamento</div><div class="kpi-value" id="kpi-andamento">0</div><div class="kpi-sub">Em execução</div></div>
+      <div class="kpi-card parado"><div class="kpi-label">Paradas</div><div class="kpi-value" id="kpi-parado">0</div><div class="kpi-sub">Bloqueadas</div></div>
+      <div class="kpi-card definir"><div class="kpi-label">A Definir</div><div class="kpi-value" id="kpi-definir">0</div><div class="kpi-sub">Pendentes de status</div></div>
     </section>
-
     <section class="charts-grid" aria-label="Gráficos">
-      <div class="chart-card">
-        <h3>Distribuição por Status</h3>
-        <div class="chart-container"><canvas id="chart-status"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <h3>Atividades por Responsável</h3>
-        <div class="chart-container"><canvas id="chart-responsavel"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <h3>Atividades por Categoria</h3>
-        <div class="chart-container"><canvas id="chart-categoria"></canvas></div>
-      </div>
+      <div class="chart-card"><h3>Distribuição por Status</h3><div class="chart-container"><canvas id="chart-status"></canvas></div></div>
+      <div class="chart-card"><h3>Atividades por Responsável</h3><div class="chart-container"><canvas id="chart-responsavel"></canvas></div></div>
+      <div class="chart-card"><h3>Atividades por Categoria</h3><div class="chart-container"><canvas id="chart-categoria"></canvas></div></div>
     </section>
-
     <section>
-      <div class="page-header" style="margin-bottom:1rem">
-        <h1 style="font-size:1.35rem">Atividades do Projeto</h1>
-        <p>Visualização em cards de todas as tarefas</p>
-      </div>
+      <div class="page-header" style="margin-bottom:1rem"><h1 style="font-size:1.35rem">Atividades do Projeto</h1><p>Visualização em cards</p></div>
       <div class="filters-bar">
-        <div class="filter-group">
-          <label for="filter-status">Status</label>
+        <div class="filter-group"><label for="filter-status">Status</label>
           <select id="filter-status" class="filter-select">
-            <option value="">Todos</option>
-            <option value="A DEFINIR">A Definir</option>
-            <option value="PARADO">Parado</option>
-            <option value="EM ANDAMENTO">Em Andamento</option>
-            <option value="CONCLUIDO">Concluído</option>
+            <option value="">Todos</option><option value="A DEFINIR">A Definir</option><option value="PARADO">Parado</option><option value="EM ANDAMENTO">Em Andamento</option><option value="CONCLUIDO">Concluído</option>
           </select>
         </div>
-        <div class="filter-group">
-          <label for="filter-responsavel">Responsável</label>
-          <select id="filter-responsavel" class="filter-select"><option value="">Todos</option></select>
-        </div>
-        <div class="filter-group">
-          <label for="filter-categoria">Categoria</label>
-          <select id="filter-categoria" class="filter-select"><option value="">Todas</option></select>
-        </div>
-        <div class="filter-group">
-          <label for="filter-search">Buscar</label>
-          <input type="search" id="filter-search" class="filter-input" placeholder="Tarefa, subtarefa..." />
-        </div>
-        <div class="filter-group" style="justify-content:flex-end">
-          <label>&nbsp;</label>
-          <button type="button" id="btn-clear-filters" class="btn btn-secondary">Limpar filtros</button>
-        </div>
+        <div class="filter-group"><label for="filter-responsavel">Responsável</label><select id="filter-responsavel" class="filter-select"><option value="">Todos</option></select></div>
+        <div class="filter-group"><label for="filter-categoria">Categoria</label><select id="filter-categoria" class="filter-select"><option value="">Todas</option></select></div>
+        <div class="filter-group"><label for="filter-search">Buscar</label><input type="search" id="filter-search" class="filter-input" placeholder="Tarefa..." /></div>
+        <div class="filter-group" style="justify-content:flex-end"><label>&nbsp;</label><button type="button" id="btn-clear-filters" class="btn btn-secondary">Limpar</button></div>
       </div>
       <div class="cards-grid" id="cards-container"></div>
     </section>
