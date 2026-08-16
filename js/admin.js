@@ -1,11 +1,10 @@
 // ============================================
-// ANP Monitor - Página de Administração
+// ANP Monitor - Administração (API Render)
 // ============================================
 
 const ADMIN_USER = "admin";
 const ADMIN_PASS = "admin123";
 const SESSION_KEY = "anp_admin_session";
-const TOKEN_KEY = "anp_gh_token";
 
 let activities = [];
 
@@ -20,15 +19,10 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("btn-logout").addEventListener("click", handleLogout);
   document.getElementById("btn-save").addEventListener("click", saveAll);
   document.getElementById("btn-reset").addEventListener("click", handleReset);
-  document.getElementById("btn-save-token").addEventListener("click", saveToken);
 });
 
 function isLoggedIn() {
   return sessionStorage.getItem(SESSION_KEY) === "true";
-}
-
-function getToken() {
-  return localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY) || "";
 }
 
 function showLogin() {
@@ -39,10 +33,6 @@ function showLogin() {
 function showAdminPanel() {
   document.getElementById("login-section").style.display = "none";
   document.getElementById("admin-section").style.display = "block";
-
-  var tokenInput = document.getElementById("gh-token");
-  if (tokenInput) tokenInput.value = getToken();
-
   loadActivities().then(function (data) {
     activities = data;
     renderAdminTable();
@@ -73,20 +63,9 @@ function handleLogout() {
   document.getElementById("password").value = "";
 }
 
-function saveToken() {
-  var token = document.getElementById("gh-token").value.trim();
-  if (!token) {
-    showToast("Cole o Personal Access Token do GitHub.", "error");
-    return;
-  }
-  localStorage.setItem(TOKEN_KEY, token);
-  sessionStorage.removeItem(TOKEN_KEY);
-  showToast("Token salvo neste navegador (não fica no código do site).", "success");
-}
-
 function renderAdminTable() {
   var tbody = document.getElementById("admin-tbody");
-  tbody.innerHTML = activities.map(function (a, idx) {
+  tbody.innerHTML = activities.map(function (a) {
     return (
       '<tr data-id="' + a.id + '">' +
         "<td><strong>#" + a.id + "</strong></td>" +
@@ -133,7 +112,7 @@ function formatDateForDisplay(iso) {
 
 function markDirty() {
   var btn = document.getElementById("btn-save");
-  if (btn) btn.textContent = "Salvar no GitHub *";
+  if (btn) btn.textContent = "Salvar *";
 }
 
 function collectFromTable() {
@@ -152,14 +131,6 @@ function collectFromTable() {
 }
 
 async function saveAll() {
-  var token = getToken() || document.getElementById("gh-token").value.trim();
-  if (!token) {
-    showToast("Informe o Token do GitHub antes de salvar.", "error");
-    document.getElementById("gh-token").focus();
-    return;
-  }
-  localStorage.setItem(TOKEN_KEY, token);
-
   collectFromTable();
   var btn = document.getElementById("btn-save");
   var original = btn.textContent;
@@ -167,9 +138,10 @@ async function saveAll() {
   btn.textContent = "Salvando...";
 
   try {
-    await saveActivitiesToGitHub(activities, token);
-    btn.textContent = "Salvar no GitHub";
-    showToast("Salvo no GitHub! Em 1–2 min o dashboard atualiza para todos.", "success");
+    activities = await saveActivitiesToApi(activities);
+    btn.textContent = "Salvar alterações";
+    showToast("Salvo no banco de dados! Todos veem as mudanças.", "success");
+    renderAdminTable();
   } catch (e) {
     console.error(e);
     showToast("Erro ao salvar: " + e.message, "error");
@@ -180,19 +152,14 @@ async function saveAll() {
 }
 
 async function handleReset() {
-  if (!confirm("Restaurar dados originais da planilha e salvar no GitHub?")) return;
-  var token = getToken() || document.getElementById("gh-token").value.trim();
-  if (!token) {
-    showToast("Informe o Token do GitHub.", "error");
-    return;
-  }
+  if (!confirm("Restaurar dados originais da planilha e salvar no banco?")) return;
   activities = resetActivities();
   renderAdminTable();
   try {
-    await saveActivitiesToGitHub(activities, token);
-    showToast("Dados restaurados e salvos no GitHub.", "success");
+    activities = await saveActivitiesToApi(activities);
+    showToast("Dados restaurados e salvos no banco.", "success");
   } catch (e) {
-    showToast("Restaurado na tela, mas falhou ao salvar no GitHub: " + e.message, "error");
+    showToast("Restaurado na tela, mas falhou ao salvar: " + e.message, "error");
   }
 }
 
