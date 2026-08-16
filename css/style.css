@@ -373,6 +373,11 @@ body {
   color: #4ade80;
 }
 
+.status-badge.atrasado {
+  background: rgba(244, 63, 94, 0.25);
+  color: #fb7185;
+}
+
 .card-body {
   padding: 1rem 1.15rem;
   flex: 1;

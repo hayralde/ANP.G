@@ -1,5 +1,6 @@
-const STATUS_COLS = ["A DEFINIR", "PARADO", "EM ANDAMENTO", "CONCLUIDO"];
+const STATUS_COLS = ["A DEFINIR", "PARADO", "EM ANDAMENTO", "ATRASADO", "CONCLUIDO"];
 const BOARD_COLS = ["A DEFINIR", "PARADO", "EM ANDAMENTO", "ATRASADO", "CONCLUIDO"];
+const BLOCKED_STATUSES = ["PARADO", "ATRASADO"];
 let activities = [];
 let dragId = null;
 
@@ -9,6 +10,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   render();
   bindFilters();
   bindBoardDnD();
+  initKbEditModal();
+  await autoFlagOverdue();
 });
 
 function setStatusMsg(msg, kind) {
@@ -75,6 +78,7 @@ function normalizeStatus(s) {
   if (STATUS_COLS.indexOf(u) !== -1) return u;
   if (u.indexOf("ANDAMENTO") !== -1) return "EM ANDAMENTO";
   if (u.indexOf("CONCL") !== -1) return "CONCLUIDO";
+  if (u.indexOf("ATRAS") !== -1) return "ATRASADO";
   if (u.indexOf("PARAD") !== -1) return "PARADO";
   return "A DEFINIR";
 }
@@ -107,10 +111,7 @@ function isOverdue(a) {
 }
 
 function boardColumn(a) {
-  var st = normalizeStatus(a.status);
-  if (st === "CONCLUIDO") return "CONCLUIDO";
-  if (isOverdue(a)) return "ATRASADO";
-  return st;
+  return normalizeStatus(a.status);
 }
 
 function formatRange(a) {
@@ -157,7 +158,7 @@ function cardHtml(a) {
   var pend = normalizeStatus(a.status) !== "EM ANDAMENTO" && a.pendencia && a.pendencia !== "A DEFINIR" && a.pendencia !== "NENHUMA";
   var range = formatRange(a);
   var overdue = isOverdue(a);
-  var parado = normalizeStatus(a.status) === "PARADO";
+  var showMotivo = BLOCKED_STATUSES.indexOf(normalizeStatus(a.status)) !== -1;
   return (
     '<article class="kb-card' + (overdue ? " overdue" : "") + '" draggable="true" data-id="' + a.id + '">' +
       '<p class="kb-card-title">' + esc(a.tarefa || "Sem título") + "</p>" +
@@ -167,7 +168,7 @@ function cardHtml(a) {
         '<span class="kb-chip">' + esc(a.responsavel || "A DEFINIR") + "</span>" +
         (pend ? '<span class="kb-chip pend">Pend: ' + esc(a.pendencia) + "</span>" : "") +
         (range ? '<span class="kb-chip date' + (overdue ? " late" : "") + '">' + esc(range) + "</span>" : "") +
-        (parado ? '<span class="kb-chip motivo" data-motivo-id="' + a.id + '">Motivo: ' + esc(a.motivo || "clique para preencher") + "</span>" : "") +
+        (showMotivo ? '<span class="kb-chip motivo" data-motivo-id="' + a.id + '">🚩 Motivo: ' + esc(a.motivo || "clique para preencher") + "</span>" : "") +
       "</div>" +
       '<div class="kb-card-foot">' +
         '<span class="kb-card-id">#' + a.id + " · " + esc(normalizeStatus(a.status)) + "</span>" +
@@ -219,7 +220,9 @@ function bindFilters() {
     var ed = e.target.closest(".kb-card-actions .edit");
     if (ed) {
       e.preventDefault();
-      location.href = "admin2.html?edit=" + ed.dataset.id;
+      var eid = parseInt(ed.dataset.id, 10);
+      var ea = activities.find(function (x) { return x.id === eid; });
+      if (ea) openKbEdit(ea);
     }
 
     var mot = e.target.closest(".kb-chip.motivo");
@@ -303,46 +306,200 @@ async function moveCard(id, targetCol) {
   if (i < 0) return;
 
   var newStatus = targetCol;
-  if (targetCol === "ATRASADO") {
-    newStatus = "PARADO";
-  }
+  var wasBlocked = BLOCKED_STATUSES.indexOf(normalizeStatus(activities[i].status)) !== -1;
+  var willBeBlocked = BLOCKED_STATUSES.indexOf(newStatus) !== -1;
+  var enteringBlocked = willBeBlocked && normalizeStatus(activities[i].status) !== newStatus;
+  var leavingBlocked = wasBlocked && !willBeBlocked;
 
-  var enteringParado = newStatus === "PARADO" && normalizeStatus(activities[i].status) !== "PARADO";
-  if (enteringParado) {
+  if (enteringBlocked) {
     var a = activities[i];
+    var label = newStatus === "ATRASADO"
+      ? "está indo para Atrasado. Informe o motivo:"
+      : "está indo para Parado. Informe o motivo:";
     openAnpMotivo({
       title: "Motivo do bloqueio",
-      label: "#" + a.id + " — " + (a.tarefa || "") + " está indo para Parado. Informe o motivo:",
+      label: "#" + a.id + " — " + (a.tarefa || "") + " " + label,
       value: a.motivo || "",
       required: true,
       onConfirm: async function (val) {
-        await applyMove(id, newStatus, targetCol, val);
+        await applyMove(id, newStatus, targetCol, val, false);
       }
     });
     return;
   }
 
-  await applyMove(id, newStatus, targetCol, activities[i].motivo || "");
+  await applyMove(id, newStatus, targetCol, activities[i].motivo || "", leavingBlocked ? true : activities[i].atrasoIgnorado);
 }
 
-async function applyMove(id, newStatus, targetCol, motivo) {
+async function applyMove(id, newStatus, targetCol, motivo, atrasoIgnorado) {
   var i = activities.findIndex(function (a) { return a.id === id; });
   if (i < 0) return;
 
   var prevStatus = activities[i].status;
   var prevMotivo = activities[i].motivo;
+  var prevIgnorado = activities[i].atrasoIgnorado;
   activities[i].status = newStatus;
   activities[i].motivo = motivo || "";
+  activities[i].atrasoIgnorado = !!atrasoIgnorado;
   render();
   setStatusMsg("Salvando…");
   try {
     activities = await saveActivities2ToApi(activities);
-    setStatusMsg("Status: " + newStatus + (targetCol === "ATRASADO" ? " (Atrasado = prazo vencido)" : ""), "ok");
+    setStatusMsg("Status: " + newStatus, "ok");
   } catch (err) {
     activities[i].status = prevStatus;
     activities[i].motivo = prevMotivo;
+    activities[i].atrasoIgnorado = prevIgnorado;
     render();
     setStatusMsg("Erro ao salvar: " + err.message, "err");
     throw err;
+  }
+}
+
+async function autoFlagOverdue() {
+  var candidates = activities.filter(function (a) {
+    var st = normalizeStatus(a.status);
+    return st !== "CONCLUIDO" && st !== "ATRASADO" && isOverdue(a) && !a.atrasoIgnorado;
+  });
+  for (var idx = 0; idx < candidates.length; idx++) {
+    await new Promise(function (resolve) {
+      var a = candidates[idx];
+      openAnpMotivo({
+        title: "Atividade atrasada",
+        label: "#" + a.id + " — " + (a.tarefa || "") + " passou do prazo e caiu em Atrasado. Informe o motivo:",
+        value: a.motivo || "",
+        onConfirm: async function (val) {
+          await applyMove(a.id, "ATRASADO", "ATRASADO", val, false);
+          resolve();
+        },
+        onCancel: function () {
+          applyMove(a.id, "ATRASADO", "ATRASADO", a.motivo || "", false).then(resolve);
+        }
+      });
+    });
+  }
+}
+
+function fillKbSelect(id, list) {
+  document.getElementById(id).innerHTML = list.map(function (v) {
+    return '<option value="' + esc(v) + '">' + esc(v) + "</option>";
+  }).join("");
+}
+
+function initKbEditModal() {
+  fillKbSelect("kbe-responsavel", RESPONSAVEIS);
+  fillKbSelect("kbe-pendencia", PENDENCIAS);
+  fillKbSelect("kbe-tipo", TIPOS_DEMANDA);
+  fillKbSelect("kbe-status", STATUS_OPTIONS);
+  document.getElementById("kb-edit-close").addEventListener("click", closeKbEditModal);
+  document.getElementById("kb-edit-cancel").addEventListener("click", closeKbEditModal);
+  document.getElementById("kb-edit-backdrop").addEventListener("click", function (e) {
+    if (e.target === this) closeKbEditModal();
+  });
+  document.getElementById("kbe-btn-add-item").addEventListener("click", function () { addKbItemRow(""); });
+  document.getElementById("kb-edit-form").addEventListener("submit", onKbEditSave);
+}
+
+function kbToIso(val) {
+  if (!val) return "";
+  if (/^\d{4}-\d{2}-\d{2}$/.test(val)) return val;
+  var p = String(val).split("/");
+  if (p.length === 3) return p[2] + "-" + p[1].padStart(2, "0") + "-" + p[0].padStart(2, "0");
+  return "";
+}
+function kbFromIso(iso) {
+  if (!iso) return "";
+  var p = iso.split("-");
+  return p[2] + "/" + p[1] + "/" + p[0];
+}
+
+function addKbItemRow(v) {
+  var row = document.createElement("div");
+  row.className = "item-row";
+  row.innerHTML = '<input type="text" class="item-input" value="' + esc(v || "") + '" />' +
+    '<button type="button">&times;</button>';
+  row.querySelector("button").onclick = function () { row.remove(); };
+  document.getElementById("kbe-itens-list").appendChild(row);
+}
+
+function collectKbItens() {
+  var out = [];
+  document.querySelectorAll("#kbe-itens-list .item-input").forEach(function (i) {
+    var v = i.value.trim();
+    if (v) out.push(v);
+  });
+  return out;
+}
+
+var _kbEditId = null;
+
+function openKbEdit(a) {
+  _kbEditId = a.id;
+  document.getElementById("kb-edit-title").textContent = "Editar atividade #" + a.id;
+  document.getElementById("kbe-id").value = a.id;
+  document.getElementById("kbe-area").value = a.categoria || "";
+  document.getElementById("kbe-tarefa").value = a.tarefa || "";
+  document.getElementById("kbe-subtarefa").value = a.subtarefa || "";
+  document.getElementById("kbe-responsavel").value = a.responsavel || "A DEFINIR";
+  document.getElementById("kbe-pendencia").value = a.pendencia || "A DEFINIR";
+  document.getElementById("kbe-tipo").value = a.tipoDemanda || "NOVO";
+  document.getElementById("kbe-status").value = normalizeStatus(a.status);
+  document.getElementById("kbe-previsao-inicio").value = kbToIso(a.previsaoInicio || "");
+  document.getElementById("kbe-previsao-fim").value = kbToIso(a.previsaoFim || a.previsao || "");
+  document.getElementById("kbe-motivo").value = a.motivo || "";
+  document.getElementById("kbe-obs").value = a.obs || "";
+  document.getElementById("kbe-itens-list").innerHTML = "";
+  (a.detalhes || []).forEach(function (d) { addKbItemRow(d); });
+  document.getElementById("kb-edit-backdrop").classList.add("open");
+}
+
+function closeKbEditModal() {
+  document.getElementById("kb-edit-backdrop").classList.remove("open");
+  _kbEditId = null;
+}
+
+async function onKbEditSave(e) {
+  e.preventDefault();
+  var btn = document.getElementById("kb-edit-save");
+  btn.disabled = true;
+  try {
+    var id = parseInt(document.getElementById("kbe-id").value, 10);
+    var i = activities.findIndex(function (a) { return a.id === id; });
+    if (i < 0) return;
+
+    var oldFim = activities[i].previsaoFim || activities[i].previsao || "";
+    var newFim = kbFromIso(document.getElementById("kbe-previsao-fim").value);
+    var newStatus = document.getElementById("kbe-status").value;
+
+    var updated = Object.assign({}, activities[i], {
+      tarefa: document.getElementById("kbe-tarefa").value.trim(),
+      subtarefa: document.getElementById("kbe-subtarefa").value.trim(),
+      categoria: document.getElementById("kbe-area").value.trim(),
+      responsavel: document.getElementById("kbe-responsavel").value,
+      pendencia: document.getElementById("kbe-pendencia").value,
+      tipoDemanda: document.getElementById("kbe-tipo").value,
+      status: newStatus,
+      previsaoInicio: kbFromIso(document.getElementById("kbe-previsao-inicio").value),
+      previsaoFim: newFim,
+      previsao: newFim,
+      motivo: document.getElementById("kbe-motivo").value.trim(),
+      obs: document.getElementById("kbe-obs").value.trim(),
+      detalhes: collectKbItens()
+    });
+    if (newFim !== oldFim) updated.atrasoIgnorado = false;
+
+    var prev = activities[i];
+    activities[i] = updated;
+    try {
+      activities = await saveActivities2ToApi(activities);
+      setStatusMsg("Salvo #" + id, "ok");
+      render();
+      closeKbEditModal();
+    } catch (err) {
+      activities[i] = prev;
+      setStatusMsg("Erro ao salvar: " + err.message, "err");
+    }
+  } finally {
+    btn.disabled = false;
   }
 }

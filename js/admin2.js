@@ -70,7 +70,7 @@ function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 function stClass(s) {
-  var m = { "A DEFINIR": "a-definir", "PARADO": "parado", "EM ANDAMENTO": "em-andamento", "CONCLUIDO": "concluido" };
+  var m = { "A DEFINIR": "a-definir", "PARADO": "parado", "EM ANDAMENTO": "em-andamento", "ATRASADO": "atrasado", "CONCLUIDO": "concluido" };
   return m[s] || "a-definir";
 }
 

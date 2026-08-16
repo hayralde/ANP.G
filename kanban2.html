@@ -40,8 +40,25 @@
     .kb-card-meta{display:flex;flex-wrap:wrap;gap:.3rem;align-items:center}
     .kb-chip{font-size:.65rem;font-weight:600;padding:.15rem .4rem;border-radius:6px;background:#0f172a;color:#cbd5e1;border:1px solid #334155}
     .kb-chip.pend{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.3);color:#fca5a5}
-    .kb-chip.motivo{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.35);color:#fcd34d;cursor:pointer;max-width:100%;white-space:normal}
-    .kb-chip.motivo:hover{background:rgba(245,158,11,.22)}
+    .kb-chip.motivo{background:rgba(239,68,68,.16);border-color:rgba(239,68,68,.45);color:#fecaca;font-weight:700;cursor:pointer;max-width:100%;white-space:normal}
+    .kb-chip.motivo:hover{background:rgba(239,68,68,.28)}
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,.75);display:none;align-items:center;justify-content:center;z-index:1000;padding:1rem;overflow-y:auto}
+    .modal-backdrop.open{display:flex}
+    .modal{background:#1e293b;border:1px solid #334155;border-radius:16px;width:100%;max-width:480px;padding:1.25rem 1.4rem;max-height:92vh;overflow-y:auto}
+    .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+    .modal-header h2{margin:0;font-size:1.1rem}
+    .modal-close{background:none;border:none;color:#94a3b8;font-size:1.4rem;cursor:pointer}
+    .field{margin-bottom:.85rem}
+    .field label{display:block;font-size:.68rem;font-weight:600;text-transform:uppercase;color:#64748b;margin-bottom:.3rem}
+    .field input,.field select,.field textarea{width:100%;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#f1f5f9;padding:.6rem .75rem;font-size:.9rem;font-family:inherit}
+    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+    .itens-box{border:1px solid #334155;border-radius:8px;padding:.5rem;background:#0f172a}
+    .item-row{display:flex;gap:.4rem;margin-bottom:.35rem}.item-row input{flex:1}
+    .item-row button{background:#334155;border:none;color:#94a3b8;width:30px;border-radius:6px;cursor:pointer}
+    .btn-add-item{width:100%;background:transparent;border:1px dashed #475569;color:#94a3b8;padding:.45rem;border-radius:6px;cursor:pointer}
+    .modal-footer{display:flex;justify-content:flex-end;gap:.5rem;margin-top:1rem;padding-top:.75rem;border-top:1px solid #334155}
+    .btn-cancel{background:transparent;border:1px solid #475569;color:#cbd5e1;padding:.5rem 1rem;border-radius:8px;cursor:pointer}
+    .btn-save{background:#f59e0b;border:none;color:#0f172a;font-weight:700;padding:.5rem 1rem;border-radius:8px;cursor:pointer}
     .kb-chip.area{color:#93c5fd;border-color:#1e3a5f}.kb-chip.date{color:#fcd34d;border-color:#78350f}
     .kb-chip.date.late{background:rgba(244,63,94,.15);border-color:rgba(244,63,94,.35);color:#fda4af}
     .kb-card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:.55rem;gap:.4rem}
@@ -107,6 +124,27 @@
       </div>
     </div>
   </main>
+  <div class="modal-backdrop" id="kb-edit-backdrop">
+    <div class="modal">
+      <div class="modal-header"><h2 id="kb-edit-title">Editar atividade</h2><button type="button" class="modal-close" id="kb-edit-close">&times;</button></div>
+      <form id="kb-edit-form">
+        <input type="hidden" id="kbe-id" />
+        <div class="field"><label>Área / Categoria</label><input type="text" id="kbe-area" /></div>
+        <div class="field"><label>Tarefa</label><input type="text" id="kbe-tarefa" required /></div>
+        <div class="field"><label>Subtarefa</label><input type="text" id="kbe-subtarefa" /></div>
+        <div class="field-row"><div class="field"><label>Responsável</label><select id="kbe-responsavel"></select></div><div class="field"><label>Pendência de</label><select id="kbe-pendencia"></select></div></div>
+        <div class="field-row"><div class="field"><label>Tipo de demanda</label><select id="kbe-tipo"></select></div><div class="field"><label>Status</label><select id="kbe-status"></select></div></div>
+        <div class="field-row">
+          <div class="field"><label>Data inicial</label><input type="date" id="kbe-previsao-inicio" /></div>
+          <div class="field"><label>Data final</label><input type="date" id="kbe-previsao-fim" /></div>
+        </div>
+        <div class="field"><label>Motivo (quando Parado/Atrasado)</label><textarea id="kbe-motivo" rows="2"></textarea></div>
+        <div class="field"><label>Observações</label><textarea id="kbe-obs" rows="2"></textarea></div>
+        <div class="field"><label>Itens / Sub-ações</label><div class="itens-box"><div id="kbe-itens-list"></div><button type="button" class="btn-add-item" id="kbe-btn-add-item">+ Adicionar item</button></div></div>
+        <div class="modal-footer"><button type="button" class="btn-cancel" id="kb-edit-cancel">Cancelar</button><button type="submit" class="btn-save" id="kb-edit-save">Salvar</button></div>
+      </form>
+    </div>
+  </div>
   <script src="js/data2.js"></script>
   <script src="js/delete-helper.js"></script>
   <script src="js/motivo-helper.js"></script>

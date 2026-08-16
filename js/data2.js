@@ -3,7 +3,7 @@ const API_BASE = "https://anp-g.onrender.com";
 const RESPONSAVEIS = ["A DEFINIR", "BRUNA", "ROSE", "JOSÉ", "JOSE", "GESTÃO|PROCESSO", "GESTÃO/PROCESSO"];
 const PENDENCIAS = ["NENHUMA", "A DEFINIR", "PROCESSO", "GESTÃO", "SISTEMA", "MATERIAL", "DOCUMENTAÇÃO"];
 const TIPOS_DEMANDA = ["NOVO", "ADEQUAÇÃO"];
-const STATUS_OPTIONS = ["A DEFINIR", "PARADO", "EM ANDAMENTO", "CONCLUIDO"];
+const STATUS_OPTIONS = ["A DEFINIR", "PARADO", "EM ANDAMENTO", "ATRASADO", "CONCLUIDO"];
 
 const DEFAULT_ACTIVITIES_2 = [
   { id: 1, tarefa: "INDICADORES", subtarefa: "CRIAR PAINEL", detalhes: [], responsavel: "A DEFINIR", pendencia: "NENHUMA", tipoDemanda: "NOVO", previsaoInicio: "", previsaoFim: "", obs: "", status: "A DEFINIR", categoria: "Indicadores KPI" },
@@ -27,6 +27,7 @@ function normalizeActivity2(a) {
   if (out.previsaoInicio == null) out.previsaoInicio = "";
   if (!out.pendencia) out.pendencia = "NENHUMA";
   if (out.motivo == null) out.motivo = "";
+  out.atrasoIgnorado = !!out.atrasoIgnorado;
   return out;
 }
 
@@ -62,7 +63,8 @@ async function saveActivities2ToApi(activities) {
       obs: n.obs,
       status: n.status,
       categoria: n.categoria,
-      motivo: n.motivo || ""
+      motivo: n.motivo || "",
+      atrasoIgnorado: !!n.atrasoIgnorado
     };
   });
   const res = await fetch(API_BASE + "/api/activities2", {
