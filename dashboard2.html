@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projeto 2 | Dashboard 2 | ANP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .nav-links{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem}
+    .nav-sair{background:transparent;border:1px solid #475569;border-radius:8px;cursor:pointer;font-family:inherit;padding:.35rem .65rem}
+    .nav-sair:hover{background:#ef4444;border-color:#ef4444;color:#fff!important}
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand"><div class="logo">ANP</div><span>Projeto 2</span></a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Início</a>
+      <a href="dashboard2.html" class="nav-link active">Dashboard 2</a>
+      <a href="kanban2.html" class="nav-link">Kanban</a>
+      <a href="prazos2.html" class="nav-link">Prazos 2</a>
+      <a href="admin2.html" class="nav-link">Admin 2</a>
+      <button type="button" class="nav-link nav-sair" id="btn-sair">Sair</button>
+    </div>
+  </nav>
+  <main class="container">
+    <header class="page-header"><h1>Dashboard — Projeto 2</h1><p>Indicadores do Plano 2 em tempo real</p></header>
+    <section class="charts-grid">
+      <div class="chart-card"><h3>Por Status</h3><div class="chart-container"><canvas id="chart-status2"></canvas></div></div>
+      <div class="chart-card"><h3>Por Responsável</h3><div class="chart-container"><canvas id="chart-responsavel2"></canvas></div></div>
+      <div class="chart-card"><h3>Por Categoria</h3><div class="chart-container"><canvas id="chart-categoria2"></canvas></div></div>
+    </section>
+  </main>
+  <script src="js/data2.js"></script>
+  <script src="js/dashboard2.js"></script>
+  <script>(function(){var b=document.getElementById("btn-sair");if(b)b.onclick=function(){try{sessionStorage.removeItem("anp_admin2_session");}catch(e){}location.href="index.html";};})();</script>
+</body>
+</html>
